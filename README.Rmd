@@ -1,0 +1,56 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+[![Travis-CI Build Status](https://travis-ci.org/dirkschumacher/llr.svg?branch=master)](https://travis-ci.org/dirkschumacher/llr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/llr?branch=master&svg=true)](https://ci.appveyor.com/project/dirkschumacher/llr)
+[![Coverage Status](https://img.shields.io/codecov/c/github/dirkschumacher/llr/master.svg)](https://codecov.io/github/dirkschumacher/llr?branch=master)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+library(llr)
+```
+
+# llr
+
+Lisp like R. A work in progress, just for fun package to implement a lisp interpreter in R that can parse a lisp flavored dialect of R. Inspired by ![Peter Norvig's article](http://norvig.com/lispy.html).
+
+The package is not yet recommended for mission critical production systems ;). It works for the examples below though.
+
+## Examples
+
+```{r example}
+llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
+```
+
+```{r}
+llr("
+ (suppressPackageStartupMessages (library dplyr))
+ (library tibble)
+ (as_tibble (filter mtcars (> hp 100) (> cyl 6)))
+")
+```
+
+```{r}
+llr("(first (list 1 2 3))")
+```
+
+
+```{r}
+llr("(as.integer (rest (list 1 2 3)))")
+```
+
+```{r}
+llr("(if (< 1 10) 'hello' 'world')")
+```
+
+```{r}
+llr("(exists? 1 (list 1 2 3))")
+```
+
