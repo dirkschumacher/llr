@@ -33,7 +33,7 @@ llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
 llr("
  (suppressPackageStartupMessages (library dplyr))
  (library tibble)
- (as_tibble (filter mtcars (> hp 100) (> cyl 6)))
+ (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
 ")
 ```
 
