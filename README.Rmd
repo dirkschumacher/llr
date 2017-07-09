@@ -36,6 +36,15 @@ devtools::install_github("dirkschumacher/llr")
 llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
 ```
 
+```{r}
+llr("
+  (define x (list 1 2 3 4 5))
+  (Reduce (lambda (acc x) (+ acc x)) 
+    (Filter (lambda (y) (> y 20)) (Map (lambda (x) (* x 10)) x)))
+")
+```
+
+
 ```{r, message=FALSE}
 llr("
  (library dplyr)

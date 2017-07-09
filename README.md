@@ -31,6 +31,15 @@ llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
 
 ``` r
 llr("
+  (define x (list 1 2 3 4 5))
+  (Reduce (lambda (acc x) (+ acc x)) 
+    (Filter (lambda (y) (> y 20)) (Map (lambda (x) (* x 10)) x)))
+")
+#> [1] 120
+```
+
+``` r
+llr("
  (library dplyr)
  (library tibble)
  (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
