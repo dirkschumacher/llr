@@ -3,7 +3,7 @@
 llr
 ===
 
-Lisp like R. A work in progress, just for fun package to implement a lisp interpreter in R that can parse a lisp flavored dialect of R. Inspired by ![Peter Norvig's article](http://norvig.com/lispy.html).
+Lisp like R. A work in progress, just for fun package to implement a lisp interpreter in R that can parse a lisp flavored dialect of R. Inspired by [Peter Norvig's article](http://norvig.com/lispy.html).
 
 The package is not yet recommended for mission critical production systems ;). It works for the examples below though.
 
