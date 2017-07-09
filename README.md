@@ -7,6 +7,13 @@ Lisp like R. A work in progress, just for fun package to implement a lisp interp
 
 The package is not yet recommended for mission critical production systems ;). It works for the examples below though.
 
+Install
+-------
+
+``` r
+devtools::install_github("dirkschumacher/llr")
+```
+
 Examples
 --------
 
@@ -24,7 +31,7 @@ llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
 
 ``` r
 llr("
- (suppressPackageStartupMessages (library dplyr))
+ (library dplyr)
  (library tibble)
  (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
 ")
@@ -62,14 +69,9 @@ llr("(exists? 1 (list 1 2 3))")
 
 ``` r
 llr("
-(library purrr)
-(define x (list 1 2 3 4 5 6 7))
-(as.numeric (keep x (lambda (x) (> x 5))))
+  (library purrr)
+  (define x (list 1 2 3 4 5 6 7))
+  (as.numeric (keep x (lambda (x) (> x 5))))
 ")
-#> 
-#> Attaching package: 'purrr'
-#> The following objects are masked from 'package:dplyr':
-#> 
-#>     contains, order_by
 #> [1] 6 7
 ```
