@@ -59,3 +59,17 @@ llr("(if (< 1 10) 'hello' 'world')")
 llr("(exists? 1 (list 1 2 3))")
 #> [1] TRUE
 ```
+
+``` r
+llr("
+(library purrr)
+(define x (list 1 2 3 4 5 6 7))
+(as.numeric (keep x (lambda (x) (> x 5))))
+")
+#> 
+#> Attaching package: 'purrr'
+#> The following objects are masked from 'package:dplyr':
+#> 
+#>     contains, order_by
+#> [1] 6 7
+```
