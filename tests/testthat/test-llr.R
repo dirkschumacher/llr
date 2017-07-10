@@ -38,3 +38,10 @@ test_that("define works", {
   ")
   expect_equal(get("x"), 1)
 })
+
+test_that("functions without arguments", {
+  x <- function() 2
+  y <- 1
+  expect_equal(llr("(y)"), 1)
+  expect_equal(llr("(x)"), 2)
+})

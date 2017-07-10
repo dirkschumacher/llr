@@ -84,3 +84,18 @@ llr("
 ")
 #> [1] 6 7
 ```
+
+``` r
+llr("(pi)")
+#> [1] 3.141593
+```
+
+``` r
+llr("
+  (define x (lambda () 1))
+  (x)
+")
+#> function () 
+#> 1
+#> <environment: 0x7fd13d87ed80>
+```

@@ -51,7 +51,7 @@ parse <- function(tokens) {
 
 # this takes a single lisp expression (e.g. (+ 1 1))
 # and compiles it to R
-compile_expression <- function(ast) {
+compile_expression <- function(ast, envir) {
   # check i
   is_string <- function(x) grepl(pattern = "^'.*'$", x = x)
 
@@ -72,46 +72,39 @@ compile_expression <- function(ast) {
                       "map" = "Map")
   command <- ast[[1]]
   r_command <- to_r(command)
-  if (length(ast) == 1) {
-    return(substitute(x, list(x = r_command)))
-  }
+
   # some hardcoded language features
   if (command == "define") {
     substitute(
       assign(x = name,
              value = value),
       list(name = ast[[2]],
-           value = compile_expression(ast[[3]])))
-  } else if (command == "quote") {
-    substitute(x, list(x = to_r(ast[[2]])))
+           value = compile_expression(ast[[3]], envir)))
   } else if (command == "first") {
-    substitute(x[[1]], list(x = compile_expression(ast[[2]])))
+    substitute(x[[1]], list(x = compile_expression(ast[[2]], envir)))
   } else if (command == "exists?") {
-    substitute(x %in% y, list(x = compile_expression(ast[[2]]),
-                              y = compile_expression(ast[[3]])))
+    substitute(x %in% y, list(x = compile_expression(ast[[2]], envir),
+                              y = compile_expression(ast[[3]], envir)))
   } else if (command == "rest") {
     substitute((function() {
       l <- x
       if (length(l) <= 1) NULL else l[2:length(l)]
-      })(), list(x = compile_expression(ast[[2]])))
+      })(), list(x = compile_expression(ast[[2]], envir)))
   } else if (command %in% names(translate_dict)) {
     matched_name <- translate_dict[command]
-    if (length(ast) == 1) {
-      compile_expression(matched_name)
-    } else {
-      compile_expression(c(matched_name, ast[2:length(ast)]))
-    }
+    stopifnot(length(ast) > 1)
+    compile_expression(c(matched_name, ast[2:length(ast)]))
   } else if (command == "lambda") {
     args <- ast[[2]]
     body <- ast[[3]]
     args_expression <- lapply(args, function(x) NULL)
     names(args_expression) <- as.character(args)
-    as.function(c(args_expression, compile_expression(body)))
+    as.function(c(args_expression, compile_expression(body, envir)))
   } else {
     if (length(ast) > 1) {
       compiled_args <- lapply(ast[2:length(ast)], function(x) {
         if (length(x) > 1) {
-          compile_expression(x)
+          compile_expression(x, envir)
         } else {
           to_r(x)
         }
@@ -121,14 +114,18 @@ compile_expression <- function(ast) {
         args = compiled_args
       ))
     } else {
-      substitute(f(), list(f = r_command))
+      if (is.symbol(r_command) && is.function(get(command, envir = envir))) {
+        substitute(f(), list(f = r_command))
+      } else {
+        substitute(f, list(f = r_command))
+      }
     }
   }
 }
 
 # this takes many lisp expression and compiles them to an expression
-compile <- function(expressions) {
-  as.expression(lapply(expressions, compile_expression))
+compile <- function(expressions, envir) {
+  as.expression(lapply(expressions, compile_expression, envir))
 }
 
 #' Evaluates lisp-like R
@@ -138,6 +135,6 @@ compile <- function(expressions) {
 #'
 #' @export
 llr <- function(code, envir = parent.frame()) {
-  compiled_code <- compile(parse(tokenize(code)))
+  compiled_code <- compile(parse(tokenize(code)), envir)
   eval(compiled_code, envir = envir)
 }
