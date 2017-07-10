@@ -114,10 +114,18 @@ compile_expression <- function(ast, envir) {
         args = compiled_args
       ))
     } else {
-      if (is.symbol(r_command) && is.function(get(command, envir = envir))) {
-        substitute(f(), list(f = r_command))
+      if (exists(command, envir = envir)) {
+        if (is.symbol(r_command) && is.function(get(command, envir = envir))) {
+          substitute(f(), list(f = r_command))
+        } else {
+          substitute(f, list(f = r_command))
+        }
       } else {
-        substitute(f, list(f = r_command))
+        if (is.symbol(r_command)) {
+          substitute(f(), list(f = r_command))
+        } else {
+          substitute(f, list(f = r_command))
+        }
       }
     }
   }

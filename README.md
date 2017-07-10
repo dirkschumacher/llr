@@ -92,10 +92,8 @@ llr("(pi)")
 
 ``` r
 llr("
-  (define x (lambda () 1))
-  (x)
+  (define some_fun (lambda () 1))
+  (some_fun)
 ")
-#> function () 
-#> 1
-#> <environment: 0x7fd13d87ed80>
+#> [1] 1
 ```
