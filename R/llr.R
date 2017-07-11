@@ -153,14 +153,22 @@ llr <- function(code, envir = parent.frame()) {
 #'
 #' @export
 repl <- function() {
-  message("Welcome to the LLR repl! Type (llr:exit) to exit.")
+  message("Welcome to the LLR REPL! Type (llr:exit) to exit.")
   repl_env <- new.env()
   while((input <- trimws(readline("> "))) != "(llr:exit)")  {
+    input <- trimws(input)
+    if (input == "") {
+      next
+    }
     output <- withVisible(tryCatch(llr(input, repl_env),
-             error = function(e) message(e)))
+             error = function(e) {
+               message(e)
+               cat("\n")
+               }))
     is_visible <- output$visible
     if (is_visible) {
       print(output$value)
     }
   }
+  message("LLR repl closed")
 }
