@@ -97,3 +97,9 @@ llr("
 ")
 #> [1] 1
 ```
+
+It also has a repl :)
+
+``` r
+llr::repl() # exit by typing (llr:exit)
+```

@@ -146,3 +146,20 @@ llr <- function(code, envir = parent.frame()) {
   compiled_code <- compile(parse(tokenize(code)), envir)
   eval(compiled_code, envir = envir)
 }
+
+#' A simple repl
+#'
+#' You can exit it with `(llr:exit)`
+#'
+#' @export
+repl <- function() {
+  message("Welcome to the LLR repl! Type (llr:exit) to exit.")
+  while((input <- trimws(readline("> "))) != "(llr:exit)")  {
+    output <- withVisible(tryCatch(llr(input),
+             error = function(e) message(e)))
+    is_visible <- output$visible
+    if (is_visible) {
+      print(output$value)
+    }
+  }
+}
