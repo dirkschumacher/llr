@@ -23,6 +23,8 @@ Lisp like R (llr). A work in progress, just for fun package to implement a lisp 
 
 The package is not yet recommended for mission critical production systems ;). It works for the examples below though.
 
+Note: this is a just for fun project. The interpreter simply compiles to R and has many flaws.
+
 ## Install
 
 ```{r, eval=FALSE}
