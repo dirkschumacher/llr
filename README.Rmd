@@ -97,3 +97,4 @@ It also has a repl :)
 llr::repl() # exit by typing (llr:exit)
 ```
 
+[![asciicast](https://asciinema.org/a/129308.png)](https://asciinema.org/a/129308)

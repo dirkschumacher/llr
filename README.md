@@ -46,6 +46,8 @@ llr("
  (library tibble)
  (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
 ")
+#> Warning: Installed Rcpp (0.12.12) different from Rcpp used to build dplyr (0.12.11).
+#> Please reinstall dplyr to avoid random crashes or undefined behavior.
 #> # A tibble: 7 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
@@ -105,3 +107,5 @@ It also has a repl :)
 ``` r
 llr::repl() # exit by typing (llr:exit)
 ```
+
+[![asciicast](https://asciinema.org/a/129308.png)](https://asciinema.org/a/129308)
