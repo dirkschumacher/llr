@@ -5,6 +5,8 @@ llr
 
 Lisp-like-R (llr). A work in progress, **just for fun** package to implement a lisp interpreter in R. The idea is to write a LISP that compiles to R's abstract syntax tree. It is implemented as an exercise for me to better understand LISP, but already works quite ok.
 
+There will be bugs :)
+
 Install
 -------
 
@@ -129,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.148873
+#> [1] 0.9548064
 ```
 
 ``` r
