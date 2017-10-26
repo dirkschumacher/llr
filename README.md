@@ -63,14 +63,8 @@ llr("
     ((UQ (first (rest code)))
      (UQ (first code))
      (UQ (first (rest (rest code)))))))    
+(infix (40 + 2))
 ")
-#> function (code) 
-#> rlang::get_expr(rlang::quo((rlang::UQ(first(rest(code))))(rlang::UQ(first(code)), 
-#>     rlang::UQ(first(rest(rest(code)))))))
-#> <environment: 0x7fce0ccd5fc0>
-#> attr(,"class")
-#> [1] "llr_macro"
-llr("(infix (40 + 2))")
 #> [1] 42
 llr("((fn [x] (infix (2 + x))) 40)")
 #> [1] 42
@@ -139,7 +133,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.820191
+#> [1] 0.4413847
 ```
 
 ``` r

@@ -78,8 +78,8 @@ llr("
     ((UQ (first (rest code)))
      (UQ (first code))
      (UQ (first (rest (rest code)))))))    
+(infix (40 + 2))
 ")
-llr("(infix (40 + 2))")
 llr("((fn [x] (infix (2 + x))) 40)")
 ```
 
