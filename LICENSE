@@ -1,2 +1,5 @@
 YEAR: 2017
 COPYRIGHT HOLDER: Dirk Schumacher
+
+------
+A regexpr. in tokenizer.R is taken from the MAL project licensed MPL V2. See tokenizer.R for details. Copyright (C) 2015 Joel Martin <github@martintribe.org>

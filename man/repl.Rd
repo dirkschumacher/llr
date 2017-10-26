@@ -4,7 +4,10 @@
 \alias{repl}
 \title{A simple repl}
 \usage{
-repl()
+repl(envir = parent.frame())
+}
+\arguments{
+\item{envir}{the parent environment of the repl}
 }
 \description{
 You can exit it with `(llr:exit)`
