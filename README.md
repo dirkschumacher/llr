@@ -96,11 +96,9 @@ llr("
 
 ``` r
 llr("
- (library dplyr)
  (library tibble)
- (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
+ (as_tibble (dplyr::filter mtcars (> hp 180) (> cyl 6)))
 ")
-#> Warning: package 'dplyr' was built under R version 3.4.2
 #> # A tibble: 7 x 11
 #>     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
 #>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
@@ -115,11 +113,9 @@ llr("
 
 ``` r
 llr("
-  (library purrr)
   (def x 1:7)
-  (as.numeric (keep x (fn [x] (> x 5))))
+  (as.numeric (purrr::keep x (fn [x] (> x 5))))
 ")
-#> Warning: package 'purrr' was built under R version 3.4.2
 #> [1] 6 7
 ```
 
@@ -133,7 +129,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.06398201
+#> [1] 0.148873
 ```
 
 ``` r

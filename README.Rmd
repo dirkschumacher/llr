@@ -101,17 +101,15 @@ llr("
 
 ```{r, message=FALSE}
 llr("
- (library dplyr)
  (library tibble)
- (as_tibble (filter mtcars (> hp 180) (> cyl 6)))
+ (as_tibble (dplyr::filter mtcars (> hp 180) (> cyl 6)))
 ")
 ```
 
 ```{r, message=FALSE}
 llr("
-  (library purrr)
   (def x 1:7)
-  (as.numeric (keep x (fn [x] (> x 5))))
+  (as.numeric (purrr::keep x (fn [x] (> x 5))))
 ")
 ```
 
