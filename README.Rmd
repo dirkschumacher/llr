@@ -19,11 +19,8 @@ library(llr)
 
 # llr
 
-Lisp like R (llr). A work in progress, just for fun package to implement a lisp interpreter in R that can parse a lisp flavoured dialect of R. Inspired by [Peter Norvig's article](http://norvig.com/lispy.html).
+Lisp-like-R (llr). A work in progress, **just for fun** package to implement a lisp interpreter in R. The idea is to write a LISP that compiles to R's abstract syntax tree. It is implemented as an exercise for me to better understand LISP, but already works quite ok.
 
-The package is not yet recommended for mission critical production systems ;). It works for the examples below though.
-
-Note: this is a just for fun project. The interpreter simply compiles to R and has many flaws.
 
 ## Install
 
@@ -31,18 +28,73 @@ Note: this is a just for fun project. The interpreter simply compiles to R and h
 devtools::install_github("dirkschumacher/llr")
 ```
 
+## Features
+
+### Datatypes
+
+```{r, eval=FALSE}
+llr("[1 2 3]") # list
+llr("(quote (1 2 3))") # list
+llr("1:10") # vector
+llr("(seq 0 1 0.1)") # a single numeric vector (no list)
+llr("pi") # single value
+llr("0.3")
+llr("3")
+llr("3L")
+```
+
+### Special forms
+
+```{r, eval = FALSE}
+llr("(def x 1)") # bind a value to a symbol
+llr("(defmacro hello [name] (paste0 \"Hello \" name))") # create a macro
+```
+
+
+### Functions
+
+```{r, eval = FALSE}
+llr("(fn [a] (> a 1))") # anonymous function
+llr("(utils::head [1, 2, 3] 1)") # namspaced functions
+llr("(Sys.Date)") # function without arguments
+```
+It does not yet support variadic functions, meaning functions with a variable number of arguments. Also at the moment you cannot yet define functions with `...` directly in R.
+
+### Macros
+
+LLR supports macros and expands these at compile time. Macros can be both written in R and LLR and work on R's data structures. You can use macros extend the language. In the example below we write a macro that rewrites `(a + b)` to `(+ a b)` at compile time, so you can write your binary additions in infix notation.
+
+With `quote` you can quote code (i.e. prevent it from being evaluated) and with `UQ`, you can unquote it. Those two constructs can be used to modify data structures. Powered by [rlang](https://github.com/tidyverse/rlang).
+
+```{r}
+# a macro that evalues expressions in infix notations
+# just for binary operations to make it simple
+# also, seemles R <-> LLR interop
+first <- function(x) x[[1L]]
+rest <- function(x) tail(x, length(x) - 1L)
+llr("
+(defmacro infix [code]
+  (quote
+    ((UQ (first (rest code)))
+     (UQ (first code))
+     (UQ (first (rest (rest code)))))))    
+")
+llr("(infix (40 + 2))")
+llr("((fn [x] (infix (2 + x))) 40)")
+```
+
 
 ## Examples
 
 ```{r example}
-llr("(map (lambda (x) (+ x 10)) (list 1 2 3))")
+llr("(Map (fn [x] (+ x 10)) (quote (1 2 3)))")
 ```
 
 ```{r}
 llr("
-  (define x (list 1 2 3 4 5))
-  (Reduce (lambda (acc x) (+ acc x)) 
-    (Filter (lambda (y) (> y 20)) (Map (lambda (x) (* x 10)) x)))
+  (def x [1 2 3 4 5])
+  (Reduce (fn [acc x] (+ acc x)) 
+    (Filter (fn [y] (> y 20)) (Map (fn [x] (* x 10)) x)))
 ")
 ```
 
@@ -55,41 +107,30 @@ llr("
 ")
 ```
 
-```{r}
-llr("(first (list 1 2 3))")
-```
-
-
-```{r}
-llr("(as.integer (rest (list 1 2 3)))")
-```
-
-```{r}
-llr("(if (< 1 10) 'hello' 'world')")
-```
-
-```{r}
-llr("(exists? 1 (list 1 2 3))")
-```
-
 ```{r, message=FALSE}
 llr("
   (library purrr)
-  (define x (list 1 2 3 4 5 6 7))
-  (as.numeric (keep x (lambda (x) (> x 5))))
+  (def x 1:7)
+  (as.numeric (keep x (fn [x] (> x 5))))
 ")
 ```
 
 ```{r}
-llr("(pi)")
+llr("pi")
 ```
 
 ```{r}
 llr("
-  (define some_fun (lambda () 1))
+  (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
 ```
+
+```{r}
+llr("(dplyr::filter mtcars (> hp 150))")
+```
+
+## REPL
 
 It also has a repl :)
 
@@ -98,3 +139,16 @@ llr::repl() # exit by typing (llr:exit)
 ```
 
 [![asciicast](https://asciinema.org/a/129308.png)](https://asciinema.org/a/129308)
+
+## Inspiration
+
+* [Peter Norvig's article](http://norvig.com/lispy.html)
+* [Make-a-lisp](https://github.com/kanaka/mal) - Great overview how to build a LISP. In particular I am currently using the regexp to tokenize the code.
+* [Clojure](https://clojure.org/)
+* [Hy](https://github.com/hylang/hy) - a lisp that compiles to pyhtons AST
+
+## Tests
+
+```{r}
+covr::package_coverage()
+```
