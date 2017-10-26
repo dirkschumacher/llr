@@ -67,9 +67,9 @@ LLR supports macros and expands these at compile time. Macros can be both writte
 With `quote` you can quote code (i.e. prevent it from being evaluated) and with `UQ`, you can unquote it. Those two constructs can be used to modify data structures. Powered by [rlang](https://github.com/tidyverse/rlang).
 
 ```{r}
-# a macro that evalues expressions in infix notations
+# a macro that evaluates expressions in infix notation
 # just for binary operations to make it simple
-# also, seemles R <-> LLR interop
+# also R <-> LLR interop
 first <- function(x) x[[1L]]
 rest <- function(x) tail(x, length(x) - 1L)
 llr("
