@@ -3,9 +3,9 @@
 llr
 ===
 
-Lisp-like-R (llr). A work in progress, **just for fun** package to implement a lisp interpreter in R. The idea is to write a LISP that compiles to R's abstract syntax tree. It is implemented as an exercise for me to better understand LISP, but already works quite ok.
+Lisp-like-R (llr). A work in progress, *just for fun* package to implement a lisp interpreter in R. The idea is to write a LISP that compiles to R's abstract syntax tree. It is implemented more as an exercise for me to better understand LISP, but already works quite ok.
 
-There will be bugs :)
+All of this is very experimental :)
 
 Install
 -------
@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.9548064
+#> [1] 0.4649468
 ```
 
 ``` r
@@ -163,6 +163,29 @@ llr::repl() # exit by typing (llr:exit)
 
 [![asciicast](https://asciinema.org/a/129308.png)](https://asciinema.org/a/129308)
 
+One more thing
+--------------
+
+You can use LLR directly in knitr documents thank's to knitrs language engines 🤗.
+
+``` llr
+(Reduce + 
+   (Map (fn [x] (* x 10)) [1 2 3 4 5]))
+#> 150
+```
+
+You can also communicate with other chunks through a shared environment:
+
+``` llr
+(def x "hello other chunk")
+#> hello other chunk
+```
+
+``` llr
+(print x)
+#> hello other chunk
+```
+
 Inspiration
 -----------
 
@@ -176,7 +199,8 @@ Tests
 
 ``` r
 covr::package_coverage()
-#> llr Coverage: 89.29%
+#> llr Coverage: 85.84%
+#> R/knitr.R: 0.00%
 #> R/llr.R: 18.52%
 #> R/ast.R: 92.86%
 #> R/parser.R: 99.36%

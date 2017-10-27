@@ -12,11 +12,12 @@ Imports:
     rlang,
     stringr
 Suggests: testthat,
-    covr
+    covr, knitr
 RoxygenNote: 6.0.1
 Collate: 
     'ast.R'
     'compiler.R'
+    'knitr.R'
     'parser.R'
     'tokenizer.R'
     'llr.R'
