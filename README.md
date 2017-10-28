@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.3288691
+#> [1] 0.980993
 ```
 
 ``` r
@@ -206,9 +206,9 @@ The following macro concatenates expressions by `+`. This can be used formulate 
   (geom_point))    
 ```
 
-#### Piping
+#### Magrittr like piping
 
-Another macro similiar to Clojures `->>` that works like magrittr pipes:
+Another macro similiar to Clojure's [-&gt;&gt;](https://clojuredocs.org/clojure.core/-%3E%3E) that works like `magrittr` pipes:
 
 ``` clojure
 (defmacro =>> [...] 

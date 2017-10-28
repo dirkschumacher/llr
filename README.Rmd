@@ -184,9 +184,9 @@ The following macro concatenates expressions by `+`. This can be used formulate 
 ```
 
 
-#### Piping
+#### Magrittr like piping
 
-Another macro similiar to Clojures `->>` that works like magrittr pipes:
+Another macro similiar to Clojure's [->>](https://clojuredocs.org/clojure.core/-%3E%3E) that works like `magrittr` pipes:
 
 ```{llr, results = "hide"}
 (defmacro =>> [...] 
