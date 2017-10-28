@@ -151,7 +151,6 @@ You can use LLR directly in knitr documents thank's to knitrs language engines ð
    (Map (fn [x] (* x 10)) [1 2 3 4 5]))
 ```
 
-
 You can also communicate with other chunks through a shared environment:
 
 ```{llr}
@@ -161,6 +160,54 @@ You can also communicate with other chunks through a shared environment:
 ```{llr}
 (print x)
 ```
+
+
+### More macro fun
+
+#### Piping ggplot2
+
+The following macro concatenates expressions by `+`. This can be used formulate `ggplot2` nicely. 
+
+```{llr, results = "hide"}
+(defmacro +> [...] 
+  (Reduce (fn [acc el] (quote (+ (UQ acc) (UQ el))))
+    (rlang::dots_list ...)))
+```
+
+
+```{llr, eval = FALSE}
+(library ggplot2)
+(+> 
+  (ggplot mtcars)
+  (aes mpg cyl)
+  (geom_point))    
+```
+
+
+#### Piping
+
+Another macro could be build similiar to Clojures `->>` macro that works like magrittr pipes:
+
+```{llr, results = "hide"}
+(defmacro =>> [...] 
+    (Reduce (fn [acc el] 
+      (quote 
+        (do.call
+          (UQ (first el))
+          (UQ (c (list (UQ acc)) 
+                 (unlist (as.list (UQ (rest el))) FALSE))))))
+    (rlang::dots_list ...)))
+```
+
+```{llr}
+(=>>
+  mtcars
+  (dplyr::filter (> hp 100) (> cyl 2))
+  (dplyr::group_by cyl)
+  (dplyr::summarise (n))) 
+```
+
+
 
 
 ## Inspiration

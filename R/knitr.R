@@ -10,11 +10,17 @@
 knitr_engine <- function(envir) {
   function(options) {
     code <- paste0(options$code, collapse = "\n")
+    options$engine <- "clojure" # for syntax highlighting
     if (options$eval == FALSE) {
       knitr::engine_output(options, options$code, NULL)
     } else {
       result <- llr::llr(code, envir)
-      knitr::engine_output(options, options$code, result)
+      if (options$results == "hide") {
+        knitr::engine_output(options, options$code, NULL)
+      } else {
+        out <- utils::capture.output(print(result))
+        knitr::engine_output(options, options$code, out)
+      }
     }
   }
 }

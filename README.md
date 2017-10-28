@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.4649468
+#> [1] 0.3302707
 ```
 
 ``` r
@@ -168,22 +168,71 @@ One more thing
 
 You can use LLR directly in knitr documents thank's to knitrs language engines 🤗.
 
-``` llr
+``` clojure
 (Reduce + 
    (Map (fn [x] (* x 10)) [1 2 3 4 5]))
-#> 150
+#> [1] 150
 ```
 
 You can also communicate with other chunks through a shared environment:
 
-``` llr
+``` clojure
 (def x "hello other chunk")
-#> hello other chunk
+#> [1] "hello other chunk"
 ```
 
-``` llr
+``` clojure
 (print x)
-#> hello other chunk
+#> [1] "hello other chunk"
+```
+
+### More macro fun
+
+#### Piping ggplot2
+
+The following macro concatenates expressions by `+`. This can be used formulate `ggplot2` nicely.
+
+``` clojure
+(defmacro +> [...] 
+  (Reduce (fn [acc el] (quote (+ (UQ acc) (UQ el))))
+    (rlang::dots_list ...)))
+```
+
+``` clojure
+(library ggplot2)
+(+> 
+  (ggplot mtcars)
+  (aes mpg cyl)
+  (geom_point))    
+```
+
+#### Piping
+
+Another macro could be build similiar to Clojures `->>` macro that works like magrittr pipes:
+
+``` clojure
+(defmacro =>> [...] 
+    (Reduce (fn [acc el] 
+      (quote 
+        (do.call
+          (UQ (first el))
+          (UQ (c (list (UQ acc)) 
+                 (unlist (as.list (UQ (rest el))) FALSE))))))
+    (rlang::dots_list ...)))
+```
+
+``` clojure
+(=>>
+  mtcars
+  (dplyr::filter (> hp 100) (> cyl 2))
+  (dplyr::group_by cyl)
+  (dplyr::summarise (n))) 
+#> # A tibble: 3 x 2
+#>     cyl `n()`
+#>   <dbl> <int>
+#> 1     4     2
+#> 2     6     7
+#> 3     8    14
 ```
 
 Inspiration
@@ -199,7 +248,7 @@ Tests
 
 ``` r
 covr::package_coverage()
-#> llr Coverage: 85.84%
+#> llr Coverage: 83.68%
 #> R/knitr.R: 0.00%
 #> R/llr.R: 18.52%
 #> R/ast.R: 92.86%

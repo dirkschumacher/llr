@@ -12,7 +12,7 @@ Imports:
     rlang,
     stringr
 Suggests: testthat,
-    covr, knitr
+    covr, knitr, dplyr, utils
 RoxygenNote: 6.0.1
 Collate: 
     'ast.R'
