@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.3302707
+#> [1] 0.3288691
 ```
 
 ``` r
@@ -208,7 +208,7 @@ The following macro concatenates expressions by `+`. This can be used formulate 
 
 #### Piping
 
-Another macro could be build similiar to Clojures `->>` macro that works like magrittr pipes:
+Another macro similiar to Clojures `->>` that works like magrittr pipes:
 
 ``` clojure
 (defmacro =>> [...] 
@@ -222,11 +222,12 @@ Another macro could be build similiar to Clojures `->>` macro that works like ma
 ```
 
 ``` clojure
+(library dplyr)
 (=>>
   mtcars
-  (dplyr::filter (> hp 100) (> cyl 2))
-  (dplyr::group_by cyl)
-  (dplyr::summarise (n))) 
+  (filter (> hp 100) (> cyl 2))
+  (group_by cyl)
+  (summarise (n))) 
 #> # A tibble: 3 x 2
 #>     cyl `n()`
 #>   <dbl> <int>

@@ -186,7 +186,7 @@ The following macro concatenates expressions by `+`. This can be used formulate 
 
 #### Piping
 
-Another macro could be build similiar to Clojures `->>` macro that works like magrittr pipes:
+Another macro similiar to Clojures `->>` that works like magrittr pipes:
 
 ```{llr, results = "hide"}
 (defmacro =>> [...] 
@@ -199,12 +199,13 @@ Another macro could be build similiar to Clojures `->>` macro that works like ma
     (rlang::dots_list ...)))
 ```
 
-```{llr}
+```{llr, messages = FALSE}
+(library dplyr)
 (=>>
   mtcars
-  (dplyr::filter (> hp 100) (> cyl 2))
-  (dplyr::group_by cyl)
-  (dplyr::summarise (n))) 
+  (filter (> hp 100) (> cyl 2))
+  (group_by cyl)
+  (summarise (n))) 
 ```
 
 
