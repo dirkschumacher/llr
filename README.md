@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.7577977
+#> [1] 0.7755093
 ```
 
 ``` r
@@ -190,7 +190,7 @@ You can also communicate with other chunks through a shared environment:
 
 #### Piping ggplot2
 
-The following macro concatenates expressions by `+`. This can be used fto ormulate `ggplot2` ncalls.
+The following macro concatenates expressions by `+`. This can be used to formulate `ggplot2` calls.
 
 ``` clojure
 (defmacro +> [...] 
