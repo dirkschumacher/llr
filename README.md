@@ -7,6 +7,10 @@ Lisp-like-R (llr). A work in progress, *just for fun* package to implement a lis
 
 All of this is very experimental :)
 
+It also helps that R itself is a bit of a lisp with a non-lisp syntax:
+
+> We started by writing a small lisp interpreter. Next we expanded its data structures with atomic vector types and altered its evaluation semantics to include lazy evaluation of closure arguments and argument binding by tag as well as order. Finally we added some syntactic sugar to make it look somewhat like S. We call the result "R". [An Updated History of R](http://blog.revolutionanalytics.com/2017/10/updated-history-of-r.html)
+
 Install
 -------
 
@@ -131,7 +135,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.4846308
+#> [1] 0.9530172
 ```
 
 ``` r
