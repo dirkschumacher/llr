@@ -167,7 +167,8 @@ You can also communicate with other chunks through a shared environment:
 #### Piping ggplot2
 
 
-The following macro concatenates expressions by `+`. 
+The following macro concatenates expressions by `+`.
+
 
 
 ```{llr, results = "hide"}
@@ -220,6 +221,10 @@ Another macro similiar to Clojure's [->>](https://clojuredocs.org/clojure.core/-
 * [Make-a-lisp](https://github.com/kanaka/mal) - Great overview how to build a LISP. In particular I am currently using the regexp to tokenize the code.
 * [Clojure](https://clojure.org/)
 * [Hy](https://github.com/hylang/hy) - a lisp that compiles to pyhtons AST
+
+## Code of conduct
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 ## Tests
 

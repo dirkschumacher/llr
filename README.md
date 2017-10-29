@@ -131,7 +131,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.6948954
+#> [1] 0.4846308
 ```
 
 ``` r
@@ -244,6 +244,11 @@ Inspiration
 -   [Make-a-lisp](https://github.com/kanaka/mal) - Great overview how to build a LISP. In particular I am currently using the regexp to tokenize the code.
 -   [Clojure](https://clojure.org/)
 -   [Hy](https://github.com/hylang/hy) - a lisp that compiles to pyhtons AST
+
+Code of conduct
+---------------
+
+Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Tests
 -----
