@@ -105,7 +105,12 @@ parse <- function(tokens) {
         as.symbol("::"),
         list(as.symbol("rlang"), as.symbol("UQ"))
       )
-    }  else if (token == "TRUE") {
+    } else if (token == "UQS") {
+      token <- call_node(
+        as.symbol("::"),
+        list(as.symbol("rlang"), as.symbol("UQS"))
+      )
+    } else if (token == "TRUE") {
       token <- TRUE
     } else if (token == "FALSE") {
       token <- FALSE

@@ -72,3 +72,9 @@ test_that("colon operator", {
   expect_equal(1:3, llr("1:3"))
   expect_equal(utils::head, llr("utils::head"))
 })
+
+test_that("quote, UQ and UQS", {
+  wat <- 1L
+  expect_equal(1L, llr("(quote (UQ wat))"))
+  expect_equal(quote(list(1L, 2L, 3L)), llr("(quote (list 1 (UQS (list 2 3))))"))
+})
