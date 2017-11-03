@@ -4,7 +4,7 @@ compile <- function(x, ...) UseMethod("compile", x)
 compile_identity <- function(x, envir) x
 recursive_compile <- function(x, envir) {
   for(i in seq_along(x)) {
-    x[[i]] <- compile(x[[i]], envir)
+    x[i] <- list(compile(x[[i]], envir))
   }
   x
 }
@@ -33,8 +33,5 @@ compile.call <- function(x, envir) {
       return(res)
     }
   }
-  for(i in seq_along(x)) {
-    x[[i]] <- compile(x[[i]], envir)
-  }
-  x
+  recursive_compile(x, envir)
 }

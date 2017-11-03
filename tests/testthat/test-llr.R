@@ -7,6 +7,7 @@ test_that("some basic calculations", {
   expect_equal(3L, llr("3L"))
   expect_equal(3.5, llr("3.5"))
   expect_equal(NULL, llr("NULL"))
+  expect_true(llr("(is.null NULL)"))
   expect_false(llr("FALSE"))
   expect_true(llr("TRUE"))
 })
