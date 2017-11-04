@@ -28,5 +28,3 @@ macro_node <- function(name, arguments, body) {
     rlang::get_expr(rlang::quo(!!assign_node(name, rlang::get_expr(rlang::quo(structure(!!fun, class = "llr_macro")))))),
     class = "llr_macro")
 }
-
-is.macro_node <- function(x) inherits(x, "macro_node")

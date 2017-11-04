@@ -135,7 +135,7 @@ llr("
   (def some_fun (fn [] (runif 1)))
   (some_fun)
 ")
-#> [1] 0.3775501
+#> [1] 0.194763
 ```
 
 ``` r
@@ -259,11 +259,11 @@ Tests
 
 ``` r
 covr::package_coverage()
-#> llr Coverage: 83.88%
+#> llr Coverage: 84.23%
 #> R/knitr.R: 0.00%
 #> R/llr.R: 18.52%
-#> R/ast.R: 93.33%
 #> R/parser.R: 99.38%
+#> R/ast.R: 100.00%
 #> R/compiler.R: 100.00%
 #> R/tokenizer.R: 100.00%
 ```
