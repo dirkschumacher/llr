@@ -8,7 +8,8 @@ function_node <- function(arguments, body) {
   argument_names <- as.character(arguments)
   arguments <- lapply(argument_names, function(x) quote(alist(a = ))[[2L]])
   names(arguments) <- argument_names
-  rlang::get_expr(rlang::quo(rlang::new_function(!!arguments, quote(!!body))))
+  fun_ast <- rlang::new_function(arguments, body)
+  rlang::get_expr(rlang::quo(!!fun_ast))
 }
 
 assign_node <- function(name, body) {
