@@ -1,7 +1,7 @@
 # Some methods to construct AST elements
 # Since we use R's data structures, they all return code
 call_node <- function(operator, elements) {
-  rlang::get_expr(rlang::quo(rlang::UQE(operator)(rlang::UQS(elements))))
+  rlang::get_expr(rlang::quo((!!rlang::get_expr(operator))(!!!(elements))))
 }
 
 function_node <- function(arguments, body) {
@@ -14,7 +14,7 @@ function_node <- function(arguments, body) {
 
 assign_node <- function(name, body) {
   rlang::get_expr(
-    rlang::quo(assign(rlang::UQS(c(list(as.character(name), body)))))
+    rlang::quo(assign(!!!(c(list(as.character(name), body)))))
   )
 }
 
