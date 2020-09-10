@@ -247,7 +247,7 @@ Inspiration
 -   [Peter Norvig's article](http://norvig.com/lispy.html)
 -   [Make-a-lisp](https://github.com/kanaka/mal) - Great overview how to build a LISP. In particular I am currently using the regexp to tokenize the code.
 -   [Clojure](https://clojure.org/)
--   [Hy](https://github.com/hylang/hy) - a lisp that compiles to pyhtons AST
+-   [Hy](https://github.com/hylang/hy) - a lisp that compiles to pythons AST
 
 Code of conduct
 ---------------
