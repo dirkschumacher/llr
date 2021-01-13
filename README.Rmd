@@ -1,237 +1,221 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+output: github_document
 ---
 
-[![Travis-CI Build Status](https://travis-ci.org/dirkschumacher/llr.svg?branch=master)](https://travis-ci.org/dirkschumacher/llr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/llr?branch=master&svg=true)](https://ci.appveyor.com/project/dirkschumacher/llr)
-[![Coverage Status](https://img.shields.io/codecov/c/github/dirkschumacher/llr/master.svg)](https://codecov.io/github/dirkschumacher/llr?branch=master)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "man/figures/README-",
+  out.width = "100%"
 )
-knitr::knit_engines$set(llr = llr::knitr_engine(sys.frame()))
-
-library(llr)
+llr_interpreter <- llr::llr_env$new()
+knitr::knit_engines$set(
+  clojure = llr::knitr_language_engine(llr_interpreter)
+)
 ```
 
 # llr
 
-Lisp-like-R (llr). A work in progress, *just for fun* package to implement a lisp interpreter in R. The idea is to write a LISP that compiles to R's abstract syntax tree. It is implemented more as an exercise for me to better understand LISP, but already works quite ok.
+<!-- badges: start -->
+<!-- badges: end -->
 
-All of this is very experimental :)
+llr is a small, work in progress and just for fun clojure-like lisp on top of R's abstract syntax trees. Expressions are not interpreted, but are translated to R's AST and then interpreted by the R interpreter.
 
-It also helps that R itself is a bit of a lisp with a non-lisp syntax:
+Most implementation details are sub-optimal, but the focus is on having fun and producing results instead writing perfect code. There are also many bugs and inconsistencies!
 
-> We started by writing a small lisp interpreter.  Next we expanded its data structures with atomic vector types and altered its evaluation semantics to include lazy evaluation of closure arguments and argument binding by tag as well as order.  Finally we added some syntactic sugar to make it look somewhat like S.  We call the result "R". [An Updated History of R](http://blog.revolutionanalytics.com/2017/10/updated-history-of-r.html)
+## Installation
 
-
-## Install
-
-```{r, eval=FALSE}
-devtools::install_github("dirkschumacher/llr")
+``` r
+remotes::install_github("dirkschumacher/llr")
 ```
 
-## Features
+## Intro
 
-### Datatypes
-
-```{r, eval=FALSE}
-llr("[1 2 3]") # list
-llr("(quote (1 2 3))") # list
-llr("1:10") # vector
-llr("(seq 0 1 0.1)") # a single numeric vector (no list)
-llr("pi") # single value
-llr("0.3")
-llr("3")
-llr("3L")
+```{clojure}
+(->
+  r/datasets::mtcars
+  (r/dplyr::filter (> hp 100))
+  (r/dplyr::summarise :count (r/dplyr::n) :mean_mpg (r/mean mpg))
+  (r/tibble::as_tibble))
 ```
 
-### Special forms
+Or run it from R
 
-```{r, eval = FALSE}
-llr("(def x 1)") # bind a value to a symbol
-llr("(defmacro hello [name] (paste0 \"Hello \" name))") # create a macro
+```{r}
+library(llr)
+interp <- llr_env$new()
+interp$eval("(+ 1 1)")
 ```
 
+
+## Special forms
+
+### Data Types
+
+#### Lists
+
+```{clojure}
+; this is a list
+'(1 2 3 4 5 6)
+; an unquoted list is a function call
+(+ 1 2 3 4 5 6)
+```
+
+#### Vectors
+
+```{clojure}
+[1 2 3 4]
+```
+
+#### Maps
+
+```{clojure}
+{:a 1 :b 2}
+```
+
+
+### Symbols
+
+```{clojure, eval = FALSE}
+x
+```
+
+```{clojure, eval = FALSE}
+namespaced.variable/x
+```
+
+```{clojure, eval = FALSE}
+:keyword
+```
+
+```{clojure, eval = FALSE}
+"character"
+```
+
+```{clojure, eval = FALSE}
+10 ; integer
+```
+
+```{clojure, eval = FALSE}
+10.42 ; double
+```
 
 ### Functions
 
-```{r, eval = FALSE}
-llr("(fn [a] (> a 1))") # anonymous function
-llr("(utils::head [1, 2, 3] 1)") # namspaced functions
-llr("(Sys.Date)") # function without arguments
+```{clojure, eval = FALSE}
+(fn [a b] (+ a b))
+
+(fn this
+  ([] 0)
+  ([a] a)
+  ([a b] (+ a b))
+  ([a b & more] (reduce + (conj [a b] more))))
 ```
-It does not yet support variadic functions, meaning functions with a variable number of arguments. Also at the moment you cannot yet define functions with `...` directly in R.
+
+### def
+
+To define symbols something within a namespace use `def`
+
+```{clojure}
+(def x 1)
+(def plus (fn [a b] (+ a b)))
+(plus x x)
+```
+
+
+### Meta-data
+
+Symbols and values can hold meta-data. That meta-data needs to be a map at the moment.
+
+```{clojure}
+(def ^{:const true} x ^{:meta "hello"} [ 1 2 3])
+(meta x)
+```
+
+Meta-data on symbols is currently only available to the reader.
 
 ### Macros
 
-LLR supports macros and expands these at compile time. Macros can be both written in R and LLR and work on R's data structures. You can use macros extend the language. In the example below we write a macro that rewrites `(a + b)` to `(+ a b)` at compile time, so you can write your binary additions in infix notation.
+Macros are also supported. Macros are functions bound to a name with meta data `{:macro true}`.
 
-With `quote` you can quote code (i.e. prevent it from being evaluated) and with `UQ`, you can unquote it. Those two constructs can be used to modify data structures. Powered by [rlang](https://github.com/tidyverse/rlang).
+In a macro you can use syntax-quote `<backtick>` together with the unquote `~` and unquote-splice `~@` operators.
 
-```{r}
-# a macro that evaluates expressions in infix notation
-# just for binary operations to make it simple
-# also R <-> LLR interop
-first <- function(x) x[[1L]]
-rest <- function(x) tail(x, length(x) - 1L)
-llr("
-(defmacro infix [code]
-  (quote
-    ((UQ (first (rest code)))
-     (UQ (first code))
-     (UQ (first (rest (rest code)))))))    
-(infix (40 + 2))
-")
-llr("((fn [x] (infix (2 + x))) 40)")
+```{clojure}
+(defmacro infix [operand1 operator operand2]
+  `(~operator ~operand1 ~operand2))
+(infix 1 + 1)
 ```
 
 
-## Examples
+### Recursion
 
-```{r example}
-llr("(Map (fn [x] (+ x 10)) (quote (1 2 3)))")
+Similar to Clojure llr uses `recur` to jump to a recursion point currently only defined by `loop`.
+
+```{clojure}
+(def is-even 
+  (fn [number] 
+    (loop [cnt number]
+      (if (zero? cnt)
+        true
+        (if (< cnt 0) false (recur (- cnt 2)))))))
 ```
 
-```{r}
-llr("
-  (def x [1 2 3 4 5])
-  (Reduce (fn [acc x] (+ acc x)) 
-    (Filter (fn [y] (> y 20)) (Map (fn [x] (* x 10)) x)))
-")
+```{clojure}
+(is-even 5001)
 ```
 
-
-```{r, message=FALSE}
-llr("
- (library tibble)
- (as_tibble (dplyr::filter mtcars (> hp 180) (> cyl 6)))
-")
+```{clojure}
+(is-even 5000)
 ```
 
-```{r, message=FALSE}
-llr("
-  (def x 1:7)
-  (as.numeric (purrr::keep x (fn [x] (> x 5))))
-")
-```
+### Namespaces
 
-```{r}
-llr("pi")
-```
+Every top level definition is part of a namespace
 
-```{r}
-llr("
-  (def some_fun (fn [] (runif 1)))
-  (some_fun)
-")
-```
-
-```{r}
-llr("(dplyr::filter mtcars (> hp 150))")
-```
-
-## REPL
-
-It also has a repl :)
-
-```{r, eval=FALSE}
-llr::repl() # exit by typing (llr:exit)
-```
-
-[![asciicast](https://asciinema.org/a/129308.png)](https://asciinema.org/a/129308)
-
-## One more thing
-
-You can use LLR directly in knitr documents thank's to knitrs language engines 🤗.
-
-```{llr}
-(Reduce + 
-   (Map (fn [x] (* x 10)) [1 2 3 4 5]))
-```
-
-You can also communicate with other chunks through a shared environment:
-
-```{llr}
-(def x "hello other chunk")
-```
-
-```{llr}
-(print x)
+```{clojure}
+(ns product.lib)
+(defn compute [a b] (+ a b))
+(ns user)
+(product.lib/compute 10 32)
 ```
 
 
-### More macro fun
+### Reader Dispatch
 
-#### Piping ggplot2
+The reader switches to a different set of interpretations of the next symbol when reading the character `#`.
 
+### `#_` ignores the next form
 
-The following macro concatenates expressions by `+`.
-
-
-
-```{llr, results = "hide"}
-(defmacro +> [...] 
-  (Reduce (fn [acc el] 
-            (quote (+ (UQ acc) (UQ el))))
-    (rlang::dots_list ...)))
+```{clojure}
+#_ (r/stop "error")
+"Yay"
 ```
 
+### R interop
 
-```{llr, eval = FALSE}
-(library ggplot2)
-(+> 
-  (ggplot mtcars)
-  (aes mpg cyl)
-  (geom_point))    
+All symbols starting with the namespace `r/` are treated slightly different. You can use that to refer to external R functions and symbols. In addition keywords are interpreted as named arguments.
+
+```{clojure}
+(r/set.seed 1)
+(def rand-numbers (r/stats::rnorm :n 10))
+(r/mean rand-numbers)
 ```
 
+## Design Goals
 
-#### Magrittr like piping
+* Have fun, experiment and learn :)
+* Build a clojure-like language that supports R-interop using the `r/` namespace.
 
-Another macro similiar to Clojure's [->](https://clojuredocs.org/clojure.core/-%3E) that works like `magrittr` pipes:
+## Contributing
 
-```{llr, results = "hide"}
-(defmacro => [...] 
-    (Reduce (fn [acc el] 
-      (quote 
-        (do.call
-          (UQ (first el))
-          (UQ (c (list (UQ acc)) 
-                 (unlist (as.list (UQ (rest el))) FALSE))))))
-    (rlang::dots_list ...)))
-```
+* Please read the code-of-conduct and also be aware that this a fun project,
+  so things will break and progress is valued prefect code (at the moment).
+* However everyone is invited to play around with the language, learn together,
+  extend it, fix bugs and propose features.
 
-```{llr, messages = FALSE}
-(library dplyr)
-(=>
-  mtcars
-  (filter (> hp 100) (> cyl 2))
-  (group_by cyl)
-  (summarise (n))) 
-```
+## Code of Conduct
 
-
-
-
-## Inspiration
-
-* [Peter Norvig's article](http://norvig.com/lispy.html)
-* [Make-a-lisp](https://github.com/kanaka/mal) - Great overview how to build a LISP. In particular I am currently using the regexp to tokenize the code.
-* [Clojure](https://clojure.org/)
-* [Hy](https://github.com/hylang/hy) - a lisp that compiles to pythons AST
-
-## Code of conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](CONDUCT.md). By participating in this project you agree to abide by its terms.
-
-## Tests
-
-```{r}
-covr::package_coverage()
-```
+Please note that the llr project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
