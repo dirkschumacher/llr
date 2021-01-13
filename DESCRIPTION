@@ -1,23 +1,45 @@
 Package: llr
-Type: Package
-Title: Lisp interpreter for R
-Version: 0.2.0
-Authors@R: c(person("Dirk", "Schumacher", email = "mail@dirk-schumacher.net", role = c("aut", "cre")))
+Title: A lisp like language on top of R
+Version: 0.3.0.9000
+Authors@R: 
+    person(given = "Dirk",
+           family = "Schumacher",
+           role = c("aut", "cre"),
+           email = "mail@dirk-schumacher.net")
 Description: A lisp-like language that compiles to R. Just for fun.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-ByteCompile: Yes
-Imports:
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat,
+    dplyr,
+    knitr
+Config/testthat/edition: 3
+Imports: 
+    coro,
+    fastmap,
+    purrr,
+    vctrs,
+    digest,
     rlang,
-    stringr
-Suggests: testthat,
-    covr, knitr, dplyr, utils
-RoxygenNote: 6.0.1
+    utils,
+    R6
 Collate: 
-    'ast.R'
-    'compiler.R'
+    'ast-translator.R'
+    'constants.R'
+    'list.R'
+    'double.R'
+    'map.R'
+    'reader.R'
+    'vector.R'
+    'std-lib.R'
+    'eval.R'
+    'integer.R'
     'knitr.R'
-    'parser.R'
-    'tokenizer.R'
-    'llr.R'
+    'macros.R'
+    'namespace.R'
+    'nodes.R'
+    'string.R'
+    'tokenize.R'

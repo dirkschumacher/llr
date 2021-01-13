@@ -1,9 +1,6 @@
-^.*\.Rproj$
+^llr\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
-^README-.*\.png$
-^\.travis\.yml$
-^appveyor\.yml$
-^codecov\.yml$
-.+\.gif$
-^CONDUCT\.md$
+^LICENSE\.md$
+^CODE_OF_CONDUCT\.md$
+^examples^
