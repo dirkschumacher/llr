@@ -46,3 +46,12 @@ test_that("hash token", {
   res <- tokenize("#_1")
   expect_equal(res, c("#", "_", "1"))
 })
+
+test_that("[[ is tokenized correctly", {
+  res <- tokenize("r/`[[`")
+  expect_equal(res, "r/`[[`")
+  res <- tokenize("r/[[")
+  expect_equal(res, "r/[[")
+  res <- tokenize("(r/[[)")
+  expect_equal(res, c("(", "r/[[", ")"))
+})

@@ -41,7 +41,8 @@ tokenize <- function(str) {
       tokens[[i]] <- "~@"
       i <- i + 1
     } else if (state == "token") {
-      if (current_char %in% c("(", ")", "[", "]", "{", "}")) {
+      if (current_char %in% c("(", ")", "[", "]", "{", "}") &&
+          !(startsWith(tokens[[i]], "r/") && current_char == "[")) {
         state <- "expect_token"
         i <- i + 1
         tokens[[i]] <- current_char

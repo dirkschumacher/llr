@@ -100,9 +100,6 @@ llr_core_env <- as.environment(list(
   ral_map = ral_map,
   ral_list = ral_list,
   ral_vector = ral_vector,
-  get = function(map, key) {
-    map$get(key)
-  },
   `instance?` = function(class, obj) {
     class <- rlang::enexpr(class)
     inherits(obj, as.character(class))

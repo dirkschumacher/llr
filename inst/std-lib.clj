@@ -43,6 +43,14 @@
           `(~(first el) ~acc ~@(rest el)))]
     (reduce reducer-fun values start)))
 
+(defmacro ->>
+  [start & values]
+  (let
+    [reducer-fun
+      (fn [acc el]
+          `(~(first el) ~@(rest el) ~acc ))]
+    (reduce reducer-fun values start)))
+
 (defmacro when [test & body]
   `(if ~test (do ~@body)))
 
@@ -55,3 +63,6 @@
 (defn inc [x] (+ x 1))
 
 (defmacro comment [x] nil)
+
+(defn get [coll key]
+  (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
