@@ -29,6 +29,21 @@
     ([a b] (r/base::`*` a b))
     ([a b & more] (reduce prod (conj [a b] more)))))
 
+
+(def and
+  (fn rec_and
+    ([a] a)
+    ([a b] (r/base::`&&` a b))
+    ([a b & more] (reduce rec_and (conj [a b] more)))))
+
+(def or
+  (fn rec_or
+    ([a] a)
+    ([a b] (r/base::`||` a b))
+    ([a b & more] (reduce rec_or (conj [a b] more)))))
+
+(defn not [x] (r/! x))
+
 (defmacro ->
   [start & values]
   (let
