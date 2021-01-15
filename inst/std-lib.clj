@@ -12,12 +12,6 @@
 (def =
   (fn [a b] (r/== a b)))
 
-(def map (fn [f x] (r/purrr::map x f)))
-(def filter (fn [f x] (r/purrr::keep x f)))
-(def partial r/purrr::partial)
-(def count r/length)
-(def reduce r/Reduce)
-
 (defmacro use [name]
   `((r/$ *ns_manager* use) ~name))
 
@@ -66,3 +60,14 @@
 
 (defn get [coll key]
   (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
+
+(def map (fn [f x] (r/purrr::map x f)))
+(def filter (fn [f x] (r/purrr::keep x f)))
+(def partial r/purrr::partial)
+(def count r/length)
+(def reduce r/Reduce)
+
+(def comp
+  (fn
+  ([f] f)
+  ([f & more] (r/purrr::compose (r/!!! (conj [f] more))))))
