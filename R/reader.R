@@ -169,14 +169,14 @@ is_valid_symbol <- function(str) {
   }
   grepl(
     x = str,
-    pattern = "^[a-zA-Z\\*\\+\\!\\_\\'\\?`=<>/&-][a-zA-Z0-9|\\[\\.\\*\\':\\+\\!`\\_\\'\\?=<>#\\$/&-]*$"
+    pattern = "^[a-zA-Z\\*\\+\\!\\_\\'\\?`=<>/&-][a-zA-Z0-9|%\\[\\.\\*\\':\\+\\!`\\_\\'\\?=<>#\\$/&-]*$"
   )
 }
 is_valid_keyword <- function(str) {
   # keywords without namespaces yet
   grepl(
     x = str,
-    pattern = "^:[a-zA-Z\\*\\+\\!\\_\\'\\?<>&-][a-zA-Z0-9|\\.\\*\\':\\+\\!\\_\\'\\?\\$<>#&-]*$"
+    pattern = "^:[a-zA-Z\\*\\+\\!\\_\\'\\?<>&-][a-zA-Z0-9|%\\.\\*\\':\\+\\!\\_\\'\\?\\$<>#&-]*$"
   )
 }
 is_valid_boolean <- function(x) {

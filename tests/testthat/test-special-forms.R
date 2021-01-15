@@ -111,3 +111,13 @@ test_that("loop and recur", {
   ")
   expect_equal(res, 10, ignore_attr = TRUE)
 })
+
+
+test_that("loop and recur", {
+  res <- llr_test("
+    (loop [n 10 acc 0]
+      (let [a n]
+      (if (zero? n) acc (recur (dec a) (inc acc)))))
+  ")
+  expect_equal(res, 10, ignore_attr = TRUE)
+})

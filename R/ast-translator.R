@@ -273,7 +273,7 @@ translate_to_r.loop_call <- function(node, envir) {
     stopifnot(is.name(name))
     expr({
       if (i == !!i) {
-        assign(!!as.character(name), value, envir = ral_______eval_env)
+        assign(!!as.character(name), ...elt(i), envir = ral_______eval_env)
       }
     })
   }, seq_along(names), names)
@@ -282,8 +282,12 @@ translate_to_r.loop_call <- function(node, envir) {
       ral_______eval_env <- new.env()
       ral_______return_val <- NULL
       !!!var_assigns
-      ral_______eval_env_assign <- function(i, value) {
-        !!!var_assigns_idx
+      ral____tmp_recur_next <- FALSE
+      ral____tmp_recur <- function(...) {
+        for (i in seq_len(...length())) {
+          !!!var_assigns_idx
+        }
+        ral____tmp_recur_next <<- TRUE
       }
       repeat {
         !!!var_gets
@@ -291,7 +295,12 @@ translate_to_r.loop_call <- function(node, envir) {
         ral_______return_val <- {
           !!body_exprs[[length(body_exprs)]]
         }
-        break()
+        if (ral____tmp_recur_next) {
+          ral____tmp_recur_next <- FALSE
+          next()
+        } else {
+          break()
+        }
       }
       ral_______return_val
     })()
@@ -302,25 +311,8 @@ translate_to_r.recur_call <- function(node, envir) {
   new_values <- lapply(node[-1], function(x) {
     translate_to_r(x, envir)
   })
-  assignments_1 <- lapply(seq_along(new_values), function(i) {
-    value <- new_values[[i]]
-    expr(
-      `<-`(
-        !!sym(paste0("ral____tmp_recur_", i)),
-        base::eval(quote(!!new_values[[i]]), envir = ral_______eval_env)
-      )
-    )
-  })
-  # TODO: convert that to a single function call
-  assignments_2 <- lapply(seq_along(new_values), function(i) {
-    expr(
-      ral_______eval_env_assign(!!i, !!sym(paste0("ral____tmp_recur_", i)))
-    )
-  })
   expr({
-    !!!assignments_1
-    !!!assignments_2
-    next()
+    ral____tmp_recur(!!!new_values)
   })
 }
 

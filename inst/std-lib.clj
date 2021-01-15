@@ -76,6 +76,8 @@
 (defn get [coll key]
   (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
 
+(defn mod [a b] (r/%% a b))
+
 (def map (fn [f x] (r/purrr::map x f)))
 (def filter (fn [f x] (r/purrr::keep x f)))
 (def partial r/purrr::partial)
