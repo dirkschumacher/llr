@@ -76,12 +76,17 @@
 (defn get [coll key]
   (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
 
+(defn contains? [coll key]
+  ; TODO: support llr bools
+  (if (map? coll) ((r/$ coll contains) key)
+      ((and (>= key 1) (<= key (count coll))))))
+
 (defn mod [a b] (r/%% a b))
 
 (def map (fn [f x] (r/purrr::map x f)))
 (def filter (fn [f x] (r/purrr::keep x f)))
 (def partial r/purrr::partial)
-(def count r/length)
+(def count (fn [x] (if (map? x) ((r/$ x length)) (r/length x))))
 (def reduce r/Reduce)
 
 (def comp

@@ -123,8 +123,13 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
       }
       the_list[[length(the_list) + 1]] <- el
     }
-    keys <- the_list[seq(1, length(the_list) - 1, 2)]
-    vals <- the_list[seq(2, length(the_list), 2)]
+    if (length(the_list) == 0) {
+      keys <- list()
+      vals <- list()
+    } else {
+      keys <- the_list[seq(1, length(the_list) - 1, 2)]
+      vals <- the_list[seq(2, length(the_list), 2)]
+    }
     return(ral_map(keys = keys, values = vals))
   }
   stop("Parser error at element '", element, "'")

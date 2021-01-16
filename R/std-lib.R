@@ -90,7 +90,30 @@ llr_core_env <- as.environment(list(
   first = function(x) x[[1]],
   last = function(x) x[[length(x)]],
   rest = function(x) x[-1],
-  conj = `c`,
+  conj = function(a, b) {
+    if (inherits(a, "ral_map") && inherits(a, "ral_map")) {
+      # TODO: make this work with vctrs/S3 double dispatch
+      map <- ral_map()
+      for (key in a$keys()) {
+        map <- map$set(key, a$get(key))
+      }
+      for (key in b$keys()) {
+        map <- map$set(key, b$get(key))
+      }
+      map
+    } else {
+      c(a, b)
+    }
+  },
+  assoc = function(coll, key, value) {
+    # TODO: quick hack, refactor to proper dispatch
+    if (inherits(coll, "ral_map")) {
+      coll$set(key, value)
+    } else {
+      coll[[key]] <- value
+      coll
+    }
+  },
   do = do,
   # `=` = `==`,
   `with-meta` = with_meta,

@@ -3,7 +3,8 @@
 ral_map <- function(keys = NULL, values = NULL,
                     map = fastmap::fastmap(),
                     keymap = fastmap::fastmap()) {
-  if (!is.null(keys) && !is.null(values)) {
+  if (!is.null(keys) && !is.null(values) && length(keys) > 0 &&
+      length(values) == length(keys)) {
     key_hashes <- vapply(keys, ral_map_hash, character(1))
     names(values) <- key_hashes
     names(keys) <- key_hashes
@@ -29,6 +30,9 @@ ral_map <- function(keys = NULL, values = NULL,
       },
       get = function(key) {
         map$get(ral_map_hash(key))
+      },
+      contains = function(key) {
+        map$has(ral_map_hash(key))
       },
       keys = function() {
         ral_list(.data = setNames(keymap$as_list(), NULL))

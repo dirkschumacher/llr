@@ -25,3 +25,7 @@ test_that("dynamic keys", {
   expect_equal(res$keys()[[1]], 1, ignore_attr = TRUE)
   expect_equal(res$values()[[1]], 1, ignore_attr = TRUE)
 })
+
+test_that("empty map", {
+  expect_silent(llr_test("{}"))
+})
