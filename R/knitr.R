@@ -1,5 +1,5 @@
 #' @export
-knitr_language_engine <- function(llr_interpreter) {
+knitr_language_engine <- function(llr_interpreter = llr_env$new()) {
   if (!requireNamespace("knitr", quietly = TRUE)) {
     stop("kntir is required to use this function")
   }

@@ -11,9 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-llr_interpreter <- llr::llr_env$new()
 knitr::knit_engines$set(
-  clojure = llr::knitr_language_engine(llr_interpreter)
+  clojure = llr::knitr_language_engine()
 )
 ```
 
@@ -50,6 +49,7 @@ interp <- llr_env$new()
 interp$eval("(+ 1 1)")
 ```
 
+Also see some [Advent Of Code solutions](https://github.com/dirkschumacher/aoc2020) in llr.
 
 ## Special forms
 
@@ -117,7 +117,7 @@ namespaced.variable/x
 
 ### def
 
-To define symbols something within a namespace use `def`
+`def` defines a symbol in a namespace and assignes it a name.
 
 ```{clojure}
 (def x 1)
@@ -196,7 +196,7 @@ The reader switches to a different set of interpretations of the next symbol whe
 
 ### R interop
 
-All symbols starting with the namespace `r/` are treated slightly different. You can use that to refer to external R functions and symbols. In addition keywords are interpreted as named arguments.
+All symbols starting with the namespace `r/` are treated slightly differently. You can use that to refer to external R functions and symbols. In addition keywords are interpreted as named arguments.
 
 ```{clojure}
 (r/set.seed 1)
@@ -208,13 +208,15 @@ All symbols starting with the namespace `r/` are treated slightly different. You
 
 * Have fun, experiment and learn :)
 * Build a clojure-like language that supports R-interop using the `r/` namespace.
+* Thus the core language should feel like clojure and support some of clojures's core
+  functions, but still make it easy to work with R's internal data structures.
 
 ## Contributing
 
 * Please read the code-of-conduct and also be aware that this a fun project,
   so things will break and progress is valued prefect code (at the moment).
 * However everyone is invited to play around with the language, learn together,
-  extend it, fix bugs and propose features.
+  extend it, document things, fix bugs and propose features.
 
 ## Code of Conduct
 

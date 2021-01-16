@@ -29,18 +29,15 @@
     ([a b] (r/base::`*` a b))
     ([a b & more] (reduce prod (conj [a b] more)))))
 
+(defmacro def-multi-logic [name fun]
+  `(def ~name
+    (fn rec
+      ([a] a)
+      ([a b] (~fun a b))
+      ([a b & more] (reduce rec_and (conj [a b] more))))))
 
-(def and
-  (fn rec_and
-    ([a] a)
-    ([a b] (r/base::`&&` a b))
-    ([a b & more] (reduce rec_and (conj [a b] more)))))
-
-(def or
-  (fn rec_or
-    ([a] a)
-    ([a b] (r/base::`||` a b))
-    ([a b & more] (reduce rec_or (conj [a b] more)))))
+(def-multi-logic and r/base::`&&`)
+(def-multi-logic or r/base::`||`)
 
 (defn not [x] (r/! x))
 

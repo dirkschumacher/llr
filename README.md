@@ -11,7 +11,7 @@ llr is a small, work in progress and just for fun clojure-like lisp on
 top of R’s abstract syntax trees. Expressions are not interpreted, but
 are translated to R’s AST and then interpreted by the R interpreter.
 
-Most implementation details are sub-optimal, but the focus was on having
+Most implementation details are sub-optimal, but the focus is on having
 fun and producing results instead writing perfect code. There are also
 many bugs and inconsistencies\!
 
@@ -43,6 +43,9 @@ interp <- llr_env$new()
 interp$eval("(+ 1 1)")
 #> 2
 ```
+
+Also see some [Advent Of Code
+solutions](https://github.com/dirkschumacher/aoc2020) in llr.
 
 ## Special forms
 
@@ -112,7 +115,7 @@ namespaced.variable/x
 
 ### def
 
-To define symbols something within a namespace use `def`
+`def` defines a symbol in a namespace and assignes it a name.
 
 ``` clojure
 (def x 1)
@@ -202,7 +205,7 @@ symbol when reading the character `#`.
 ### R interop
 
 All symbols starting with the namespace `r/` are treated slightly
-different. You can use that to refer to external R functions and
+differently. You can use that to refer to external R functions and
 symbols. In addition keywords are interpreted as named arguments.
 
 ``` clojure
@@ -217,6 +220,9 @@ symbols. In addition keywords are interpreted as named arguments.
   - Have fun, experiment and learn :)
   - Build a clojure-like language that supports R-interop using the `r/`
     namespace.
+  - Thus the core language should feel like clojure and support some of
+    clojures’s core functions, but still make it easy to work with R’s
+    internal data structures.
 
 ## Contributing
 
@@ -224,7 +230,7 @@ symbols. In addition keywords are interpreted as named arguments.
     project, so things will break and progress is valued prefect code
     (at the moment).
   - However everyone is invited to play around with the language, learn
-    together, extend it, fix bugs and propose features.
+    together, extend it, document things, fix bugs and propose features.
 
 ## Code of Conduct
 
