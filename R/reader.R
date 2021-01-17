@@ -81,6 +81,9 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
       if (inherits(el, "vector_end_node")) {
         break()
       }
+      if (is_exhausted(el)) {
+        stop("Expected closing `]`. AHHHHHHHH!")
+      }
       the_list[[length(the_list) + 1]] <- el
     }
     return(ral_vector(.data = the_list))
@@ -91,6 +94,9 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
       el <- consume_token(token_iterator, envir)
       if (inherits(el, "list_end_node")) {
         break()
+      }
+      if (is_exhausted(el)) {
+        stop("Expected closing `)` paren. AHHHHHHHH!")
       }
       the_list[[length(the_list) + 1]] <- el
     }
@@ -121,6 +127,9 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
       el <- consume_token(token_iterator, envir)
       if (inherits(el, "setmap_end_node")) {
         break()
+      }
+      if (is_exhausted(el)) {
+        stop("Expected closing `}`. AHHHHHHHH!")
       }
       the_list[[length(the_list) + 1]] <- el
     }
