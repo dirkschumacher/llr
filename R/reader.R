@@ -103,6 +103,7 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
         switch(head_sym,
           fn = ral_list(.data = the_list, .subclass = "fn_call"),
           def = ral_list(.data = the_list, .subclass = "def_call"),
+          `if` = ral_list(.data = the_list, .subclass = "if_call"),
           let = ral_list(.data = the_list, .subclass = "let_call"),
           quote = ral_list(.data = the_list, .subclass = "quote_call"),
           loop = ral_list(.data = the_list, .subclass = "loop_call"),

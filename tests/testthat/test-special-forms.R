@@ -121,3 +121,12 @@ test_that("loop and recur", {
   ")
   expect_equal(res, 10, ignore_attr = TRUE)
 })
+
+test_that("if works", {
+  res <- llr_test("(if 1 42 1)")
+  expect_equal(res, 1, ignore_attr = TRUE)
+  res <- llr_test("(if true 42 1)")
+  expect_equal(res, 42, ignore_attr = TRUE)
+  res <- llr_test("(if r/mtcars 42 1)")
+  expect_equal(res, 1, ignore_attr = TRUE)
+})

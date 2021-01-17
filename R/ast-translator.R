@@ -84,6 +84,24 @@ translate_to_r.def_call <- function(node, envir) {
   })
 }
 
+translate_to_r.if_call <- function(node, envir) {
+  yes <- translate_to_r(node[[3]], envir)
+  no <- if (length(node) > 3) {
+    translate_to_r(node[[4]], envir)
+  } else {
+    NULL # TODO: replace with nil once there is a nil
+  }
+  expr(
+    (function() {
+      test <- !!translate_to_r(node[[2]], envir)
+      `if`(
+        is.logical(test) && length(test) == 1 && !is.na(test) && test,
+        !!!list(yes, no)
+      )
+    })()
+  )
+}
+
 translate_to_r.meta_node <- function(node, envir) {
   expr((function() {
     val <- quote(!!translate_to_r(node$value, envir))
