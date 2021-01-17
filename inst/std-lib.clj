@@ -34,7 +34,7 @@
     (fn rec
       ([a] a)
       ([a b] (~fun a b))
-      ([a b & more] (reduce rec_and (conj [a b] more))))))
+      ([a b & more] (reduce rec (conj [a b] more))))))
 
 (def-multi-logic and r/base::`&&`)
 (def-multi-logic or r/base::`||`)
