@@ -80,6 +80,10 @@
 
 (defn mod [a b] (r/%% a b))
 
+(defn int [x]
+  ; TODO: handle NA, warnings
+  (r/llr::ral_integer (r/as.integer x)))
+
 (def map (fn [f x] (r/purrr::map x f)))
 (def filter (fn [f x] (r/purrr::keep x f)))
 (def partial r/purrr::partial)
