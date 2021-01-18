@@ -84,7 +84,7 @@ test_that("defmacro #2", {
 test_that("variadic fn args", {
   res <- llr_test("
   (def sum_list
-    (fn [vals] (reduce + vals 0)))
+    (fn [vals] (reduce + 0 vals)))
   (def myplus
     (fn [a b & more] (+ (* a b) (sum_list more))))
   (myplus 1 2 3)

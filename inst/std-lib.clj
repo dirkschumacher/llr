@@ -47,7 +47,7 @@
     [reducer-fun
       (fn [acc el]
           `(~(first el) ~acc ~@(rest el)))]
-    (reduce reducer-fun values start)))
+    (reduce reducer-fun start values)))
 
 (defmacro ->>
   [start & values]
@@ -55,7 +55,7 @@
     [reducer-fun
       (fn [acc el]
           `(~(first el) ~@(rest el) ~acc ))]
-    (reduce reducer-fun values start)))
+    (reduce reducer-fun start values)))
 
 (defmacro when [test & body]
   `(if ~test (do ~@body)))
@@ -78,17 +78,27 @@
   (if (map? coll) ((r/$ coll contains) key)
       ((and (>= key 1) (<= key (count coll))))))
 
+(defn vals [map]
+  ((r/$ map values)))
+
 (defn mod [a b] (r/%% a b))
 
 (defn int [x]
   ; TODO: handle NA, warnings
   (r/llr::ral_integer (r/as.integer x)))
 
+(defn str [x]
+  ; TODO: handle NA, warnings
+  (r/llr::ral_string (r/as.character x)))
+
 (def map (fn [f x] (r/purrr::map x f)))
 (def filter (fn [f x] (r/purrr::keep x f)))
 (def partial r/purrr::partial)
 (def count (fn [x] (if (map? x) ((r/$ x length)) (r/length x))))
-(def reduce r/Reduce)
+(def reduce
+  (fn
+    ([f coll] (r/Reduce f coll))
+    ([f init coll] (r/Reduce f coll init))))
 
 (def comp
   (fn

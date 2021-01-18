@@ -28,7 +28,7 @@ translate_to_r.numeric <- function(node, envir) {
 
 translate_to_r.name <- function(node, envir) {
   node_str <- as.character(node)
-  if (grepl("/", node_str, fixed = TRUE)) {
+  if (nchar(node_str) >= 3 && grepl("/", node_str, fixed = TRUE)) {
     split_str <- strsplit(node_str, "/", fixed = TRUE)[[1]]
     ns <- sym(split_str[[1]])
     symbol <- sym(split_str[[2]])
