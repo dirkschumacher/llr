@@ -95,7 +95,11 @@ translate_to_r.if_call <- function(node, envir) {
     (function() {
       test <- !!translate_to_r(node[[2]], envir)
       `if`(
-        is.logical(test) && length(test) == 1 && !is.na(test) && test,
+        !( # NULL (later nil) and false are the only values that evaluate to false
+          is.null(test) ||
+          (is.logical(test) && length(test) == 1 && !is.na(test) && !test)
+        )
+        ,
         !!!list(yes, no)
       )
     })()
