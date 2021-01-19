@@ -31,6 +31,7 @@ Collate:
     'constants.R'
     'list.R'
     'double.R'
+    'hasheq.R'
     'map.R'
     'reader.R'
     'vector.R'

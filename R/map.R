@@ -58,10 +58,9 @@ ral_map <- function(keys = NULL, values = NULL,
 
 #' @export
 #' @import digest
+#' @include hasheq.R
 ral_map_hash <- function(key) {
-  attributes(key) <- NULL
-  key <- serialize(key, NULL, version = 3)
-  digest(key, algo = "xxhash64", raw = TRUE, ascii = FALSE)
+  hasheq(key)
 }
 
 #' @export

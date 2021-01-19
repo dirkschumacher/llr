@@ -85,6 +85,7 @@ eval_fun <- function(ast, envir = parent.frame()) {
 #' @include vector.R
 #' @include reader.R
 #' @include map.R
+#' @include hasheq.R
 llr_core_env <- as.environment(list(
   meta = meta_fun,
   first = function(x) x[[1]],
@@ -118,11 +119,7 @@ llr_core_env <- as.environment(list(
   # `=` = `==`,
   `with-meta` = with_meta,
   `read-string` = read,
-  hash = function(x) {
-    attributes(x) <- NULL
-    key <- serialize(x, NULL, version = 3)
-    digest(key, algo = "xxhash64", raw = TRUE, ascii = FALSE)
-  },
+  hash = hasheq,
   eval = eval_fun,
   squote = squote,
   ral_map = ral_map,
