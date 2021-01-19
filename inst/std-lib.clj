@@ -10,7 +10,7 @@
   `(def ~name (fn ~args ~body)))
 
 (def =
-  (fn [a b] (r/== a b)))
+  (fn [a b] (r/== (hash a) (hash b))))
 
 (defmacro use [name]
   `((r/$ *ns_manager* use) ~name))
@@ -102,5 +102,5 @@
 
 (def comp
   (fn
-  ([f] f)
-  ([f & more] (r/purrr::compose (r/!!! (conj [f] more))))))
+    ([f] f)
+    ([f & more] (r/purrr::compose (r/!!! (conj [f] more))))))

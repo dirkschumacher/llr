@@ -118,6 +118,11 @@ llr_core_env <- as.environment(list(
   # `=` = `==`,
   `with-meta` = with_meta,
   `read-string` = read,
+  hash = function(x) {
+    attributes(x) <- NULL
+    key <- serialize(x, NULL, version = 3)
+    digest(key, algo = "xxhash64", raw = TRUE, ascii = FALSE)
+  },
   eval = eval_fun,
   squote = squote,
   ral_map = ral_map,

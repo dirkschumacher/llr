@@ -59,9 +59,9 @@ ral_map <- function(keys = NULL, values = NULL,
 #' @export
 #' @import digest
 ral_map_hash <- function(key) {
-  # TODO: just a hack using as.character
-  key <- paste0(format(key), collapse = "")
-  digest(key, algo = "xxhash64")
+  attributes(key) <- NULL
+  key <- serialize(key, NULL, version = 3)
+  digest(key, algo = "xxhash64", raw = TRUE, ascii = FALSE)
 }
 
 #' @export

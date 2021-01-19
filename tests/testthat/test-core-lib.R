@@ -40,3 +40,11 @@ test_that("count on maps counts keys", {
   res <- llr_test("(count {:a 1})")
   expect_equal(res, 1, ignore_attr = TRUE)
 })
+
+test_that("= compares values", {
+  expect_true(llr_test("(= 1 1)"))
+  expect_true(llr_test("(= [1] [1])"))
+  expect_true(llr_test("(= [1 2 3] '(1 2 3))"))
+  expect_false(llr_test("(= 1 \"1\")"))
+  expect_false(llr_test("(= r/mtcars \"1\")"))
+})
