@@ -4,7 +4,6 @@
 # llr
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 llr is a small, work in progress and just for fun clojure-like lisp on
@@ -13,7 +12,7 @@ are translated to R’s AST and then interpreted by the R interpreter.
 
 Most implementation details are sub-optimal, but the focus is on having
 fun and producing results instead writing perfect code. There are also
-many bugs and inconsistencies\!
+many bugs and inconsistencies!
 
 ## Installation
 
@@ -47,6 +46,15 @@ interp$eval("(+ 1 1)")
 Also see some [Advent Of Code
 solutions](https://github.com/dirkschumacher/aoc2020) in llr.
 
+### REPL
+
+It also has a (limited) REPL
+
+``` r
+interp <- llr_env$new()
+interp$repl()
+```
+
 ## Special forms
 
 ### Data Types
@@ -72,7 +80,7 @@ solutions](https://github.com/dirkschumacher/aoc2020) in llr.
 
 ``` clojure
 {:a 1 :b 2}
-#> {:b 2 :a 1}
+#> {:a 1 :b 2}
 ```
 
 ### Symbols
@@ -217,19 +225,19 @@ symbols. In addition keywords are interpreted as named arguments.
 
 ## Design Goals
 
-  - Have fun, experiment and learn :)
-  - Build a clojure-like language that supports R-interop using the `r/`
+-   Have fun, experiment and learn :)
+-   Build a clojure-like language that supports R-interop using the `r/`
     namespace.
-  - Thus the core language should feel like clojure and support some of
+-   Thus the core language should feel like clojure and support some of
     clojures’s core functions, but still make it easy to work with R’s
     internal data structures.
 
 ## Contributing
 
-  - Please read the code-of-conduct and also be aware that this a fun
+-   Please read the code-of-conduct and also be aware that this a fun
     project, so things will break and progress is valued prefect code
     (at the moment).
-  - However everyone is invited to play around with the language, learn
+-   However everyone is invited to play around with the language, learn
     together, extend it, document things, fix bugs and propose features.
 
 ## Code of Conduct

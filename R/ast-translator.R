@@ -137,14 +137,14 @@ translate_to_r.fn_call <- function(node, envir) {
         expr(
           if (arg_len == !!x$len_args) {
             return(
-              ((!!x$fun))(...)
+              (!!x$fun)(...)
             )
           }
         )
       } else {
         expr(
           return(
-            ((!!x$fun))(...)
+            (!!x$fun)(...)
           )
         )
       }
@@ -338,6 +338,7 @@ translate_to_r.recur_call <- function(node, envir) {
   })
 }
 
+#' @importFrom stats setNames
 translate_to_r.r_call <- function(node, envir) {
   r_fun <- translate_to_r(node[[1]])
   args <- list()

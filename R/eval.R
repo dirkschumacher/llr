@@ -34,18 +34,35 @@ llr_env <- R6::R6Class("LLREnv",
       private$exec_envir
     },
     repl = function() {
-      message("Welcome to the LLR REPL! Type (llr:exit) to exit.")
-      while ((input <- trimws(readline("> "))) != "(llr:exit)") {
-        input <- trimws(input)
-        if (input == "") {
-          next
-        }
-        output <- withVisible(tryCatch(self$eval(input),
-          error = function(e) {
-            message(e)
-            cat("\n")
+      message("Welcome to the LLR REPL! Hit <ESC> to exit.")
+      input_stream_gen <- generator(function() {
+        repeat {
+          input <- trimws(readline("llr:> "))
+          for (token in tokenize(input)) {
+            yield(token)
           }
-        ))
+        }
+      })
+      token_iter <- input_stream_gen()
+      last_value <- NULL
+      ns_manager <- get0("*ns_manager*", envir = private$exec_envir)
+      stopifnot(!is.null(ns_manager))
+      repeat {
+        ns_envir <- ns_manager$get_current_ns()$get_envir()
+        ast <- read(token_iter, ns_envir)
+        if (is_exhausted(ast)) {
+          return(last_value)
+        }
+        ast <- macroexpand(ast, ns_envir)
+        r_expression <- translate_to_r(ast, ns_envir)
+        output <- withVisible(
+          tryCatch(eval(r_expression, ns_envir),
+            error = function(e) {
+              message(e)
+              cat("\n")
+            }
+          )
+        )
         is_visible <- output$visible
         if (is_visible) {
           print(output$value)

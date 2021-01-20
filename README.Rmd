@@ -51,6 +51,16 @@ interp$eval("(+ 1 1)")
 
 Also see some [Advent Of Code solutions](https://github.com/dirkschumacher/aoc2020) in llr.
 
+### REPL
+
+It also has a (limited) REPL
+
+```{r, eval=FALSE}
+interp <- llr_env$new()
+interp$repl()
+```
+
+
 ## Special forms
 
 ### Data Types
