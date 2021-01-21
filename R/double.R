@@ -11,5 +11,5 @@ format.ral_double <- function(x, ...) {
 }
 
 #' @export
-#' @include list.R
+#' @include format.R
 print.ral_double <- default_print

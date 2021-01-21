@@ -29,8 +29,9 @@ Imports:
 Collate: 
     'ast-translator.R'
     'constants.R'
-    'list.R'
+    'format.R'
     'double.R'
+    'list.R'
     'hasheq.R'
     'map.R'
     'reader.R'

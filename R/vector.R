@@ -25,16 +25,17 @@ meta_data.ral_vector <- function(x) {
 }
 
 #' @export
+#' @include format.R
 format.ral_vector <- function(x, ...) {
   paste0(
     "[",
-    paste0(vapply(x, function(x) format(x), character(1)), collapse = " "),
+    paste0(vapply(x, function(x) llr_format(x), character(1)), collapse = " "),
     "]"
   )
 }
 
 #' @export
-#' @include list.R
+#' @include format.R
 print.ral_vector <- default_print
 
 

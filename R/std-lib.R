@@ -86,6 +86,7 @@ eval_fun <- function(ast, envir = parent.frame()) {
 #' @include reader.R
 #' @include map.R
 #' @include hasheq.R
+#' @include list.R
 llr_core_env <- as.environment(list(
   meta = meta_fun,
   first = function(x) x[[1]],

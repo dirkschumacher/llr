@@ -64,18 +64,21 @@ ral_map_hash <- function(key) {
 }
 
 #' @export
+#' @include format.R
 format.ral_map <- function(x, ...) {
   paste0(
     "{",
     paste0(vapply(x$keys(), function(key) {
-      paste0(format(key), " ", format(x$get(key)))
+      key_fmt <- paste0(llr_format(key), collapse = "\n")
+      val_fmt <- paste0(llr_format(x$get(key)), collapse = "\n")
+      paste0(key_fmt, " ", val_fmt)
     }, character(1)), collapse = " "),
     "}"
   )
 }
 
 #' @export
-#' @include list.R
+#' @include format.R
 print.ral_map <- default_print
 
 #' @export

@@ -29,3 +29,8 @@ test_that("dynamic keys", {
 test_that("empty map", {
   expect_silent(llr_test("{}"))
 })
+
+test_that("format works with length > 0 values and keys", {
+  expect_silent(format(llr_test("{:b (r/list 1 2 3)}")))
+  expect_silent(format(llr_test("{(r/list 1 2 3) 1}")))
+})

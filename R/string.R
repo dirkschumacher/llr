@@ -1,15 +1,15 @@
 #' @export
 ral_string <- function(value) {
   val <- as.character(value)
-  stopifnot(is.character(val), length(val) == 1)
+  stopifnot(length(val) == 1)
   structure(val, class = c("ral_string", "character"))
 }
 
 #' @export
 format.ral_string <- function(x, ...) {
-  NextMethod("format", x)
+  paste0("\"", NextMethod("format", x), "\"", collapse = "")
 }
 
 #' @export
-#' @include list.R
+#' @include format.R
 print.ral_string <- default_print

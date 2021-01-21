@@ -35,21 +35,18 @@ meta_data.ral_list <- function(x) {
   attr(x, "ral_meta_data", exact = TRUE)
 }
 
-default_print <- function(x, ...) {
-  cat(format(x, ...), "\n")
-}
-
 #' @export
+#' @include format.R
 format.ral_list <- function(x, ...) {
   paste0(
     "(",
-    paste0(vapply(x, function(x) format(x), character(1)), collapse = " "),
+    paste0(vapply(x, function(x) llr_format(x), character(1)), collapse = " "),
     ")"
   )
 }
 
 #' @export
-#' @include list.R
+#' @include format.R
 print.ral_list <- default_print
 
 #' @export
