@@ -70,3 +70,15 @@ test_that("correct and stable conj", {
     llr_test("(list? (conj '(1 2) 3 4 5))")
   )
 })
+
+test_that("get indexes start at 0", {
+  expect_true(
+    llr_test("(= (get [1 2 3] 2) 3)")
+  )
+  expect_true(
+    llr_test("(nil? (get [1 2 3] -1))")
+  )
+  expect_true(
+    llr_test("(nil? (get [1 2 3] 3))")
+  )
+})

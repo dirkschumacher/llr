@@ -86,7 +86,11 @@
   (boolean (r/is.null x)))
 
 (defn get [coll key]
-  (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
+  (if (map? coll)
+    ((r/$ coll get) key)
+    (let [between (fn [a b x] (and (>= x a) (<= x b)))]
+      (if (between 0 (- (count coll) 1) key)
+          (r/[[ coll (r/base::`+` key 1))))))
 
 (defn contains? [coll key]
   ; TODO: support llr bools
