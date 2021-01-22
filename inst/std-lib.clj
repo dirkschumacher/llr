@@ -24,7 +24,7 @@
       ([] ~identity)
       ([a] a)
       ([a b] (~binary-fun a b))
-      ([a b & more] (reduce rec (conj [a b] more))))))
+      ([a b & more] (reduce rec (concat [a b] more))))))
 
 (multi-arity4-arith + 0 r/base::`+`)
 (multi-arity4-arith * 1 r/base::`*`)
@@ -34,7 +34,7 @@
     (fn rec
       ([a] a)
       ([a b] (~fun a b))
-      ([a b & more] (reduce rec (conj [a b] more))))))
+      ([a b & more] (reduce rec (concat [a b] more))))))
 
 (multi-arity3-fun - r/base::`-`)
 (multi-arity3-fun / r/base::`/`)
@@ -44,13 +44,13 @@
     ([] true)
     ([a] (if a true false))
     ([a b] (if a (if b true false) false))
-    ([a b & more] (reduce rec (conj [a b] more)))))
+    ([a b & more] (reduce rec (concat [a b] more)))))
 
 (def or
   (fn rec
     ([a] (if a true false))
     ([a b] (if a true (if b true false)))
-    ([a b & more] (reduce rec (conj [a b] more)))))
+    ([a b & more] (reduce rec (concat [a b] more)))))
 
 (defn not [x] (if x false true))
 
@@ -127,4 +127,4 @@
 (def comp
   (fn
     ([f] f)
-    ([f & more] (r/purrr::compose (r/!!! (conj [f] more))))))
+    ([f & more] (r/purrr::compose (r/!!! (concat [f] more))))))

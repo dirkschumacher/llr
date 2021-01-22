@@ -6,6 +6,10 @@ translate_to_r.node <- function(node, envir) {
   stop("translation error")
 }
 
+translate_to_r.llr_nil <- function(node, envir) {
+  NULL
+}
+
 translate_to_r.ral_string <- function(node, envir) {
   node
 }

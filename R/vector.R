@@ -6,11 +6,11 @@ ral_vector <- function(..., .data = NULL, .subclass = NULL, .meta = NULL) {
     stopifnot(is.list(`.data`))
     `.data`
   }
-  class(val) <- c(.subclass, "ral_vector", "list")
+  class(val) <- c(.subclass, "ral_vector")
   ral_meta_data <- if (!is.null(.meta) && inherits(.meta, "ral_map")) {
     .meta
   }
-  new_vctr(val, ral_meta_data = ral_meta_data, class = class(val))
+  new_vctr(val, ral_meta_data = ral_meta_data, class = class(val), inherit_base_type = TRUE)
 }
 
 #' @export

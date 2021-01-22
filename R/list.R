@@ -11,7 +11,7 @@ ral_list <- function(..., .data = NULL, .subclass = NULL, .meta = NULL) {
   ral_meta_data <- if (!is.null(.meta) && inherits(.meta, "ral_map")) {
     .meta
   }
-  new_vctr(val, ral_meta_data = ral_meta_data, class = class(val))
+  new_vctr(val, ral_meta_data = ral_meta_data, class = class(val), inherit_base_type = TRUE)
 }
 
 #' @export
@@ -50,6 +50,26 @@ format.ral_list <- function(x, ...) {
 print.ral_list <- default_print
 
 #' @export
-as.character.ral_list <- function(x, ...) {
+vec_cast.character.ral_list <- function(x, to, ...) {
   format(x)
+}
+
+#' @export
+vec_cast.list.ral_list <- function(x, to, ...) {
+  ral_list(.data = c(x, vec_data(to)))
+}
+
+#' @export
+vec_cast.ral_list.list <- function(x, to, ...) {
+  ral_list(.data = c(vec_data(x), to))
+}
+
+#' @export
+vec_ptype2.list.ral_list <- function(x, y, ...) {
+  ral_list()
+}
+
+#' @export
+vec_ptype2.ral_list.list <- function(x, y, ...) {
+  ral_list()
 }

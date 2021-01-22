@@ -52,3 +52,21 @@ test_that("= compares values", {
 test_that("map is type stable", {
   expect_true(llr_test("(vector? (map dec [1 2 3]))"))
 })
+
+test_that("correct and stable conj", {
+  expect_true(
+    llr_test("(= (conj [1 2] [5 6]) [1 2 [5 6]])")
+  )
+  expect_true(
+    llr_test("(= (conj '(1 2) [3 4]) '([3 4] 1 2))")
+  )
+  expect_true(
+    llr_test("(= (conj [1 2] 3 4 5) [1 2 3 4 5])")
+  )
+  expect_true(
+    llr_test("(= (conj '(1 2) 3 4 5) '(5 4 3 1 2))")
+  )
+  expect_true(
+    llr_test("(list? (conj '(1 2) 3 4 5))")
+  )
+})

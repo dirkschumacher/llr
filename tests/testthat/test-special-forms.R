@@ -45,7 +45,7 @@ test_that("fn multi methods with dots", {
           ([] 0)
           ([a] a)
           ([a b] (r/base::`+` a b))
-          ([a b & more] (reduce plus (conj [a b] more)))))
+          ([a b & more] (reduce plus (concat [a b] more)))))
   ")
   expect_equal(interp$eval("(plus2)"), 0, ignore_attr = TRUE)
   expect_equal(interp$eval("(plus2 42)"), 42, ignore_attr = TRUE)

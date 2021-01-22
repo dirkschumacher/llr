@@ -82,6 +82,40 @@ eval_fun <- function(ast, envir = parent.frame()) {
   eval(translate_to_r(ast, envir), envir)
 }
 
+conj <- function(coll, ...) {
+  conj_impl(coll, ...)
+}
+
+conj_impl <- function(coll, ...) {
+  UseMethod("conj_impl", coll)
+}
+
+conj_impl.ral_vector <- function(coll, ...) {
+  Reduce(function(acc, el) {
+    c(acc, ral_vector(el))
+  }, list(...), coll)
+}
+
+conj_impl.ral_list <- function(coll, ...) {
+  Reduce(function(acc, el) {
+    c(ral_list(el), acc)
+  }, list(...), coll)
+}
+
+conj_impl.ral_map <- function(coll, ...) {
+  map <- ral_map()
+  for (key in coll$keys()) {
+    map <- map$set(key, coll$get(key))
+  }
+  Reduce(function(acc, el) {
+    stopifnot(inherits(el, "ral_map"))
+    for (key in el$keys()) {
+      acc <- acc$set(key, el$get(key))
+    }
+    acc
+  }, list(...), coll)
+}
+
 #' @include vector.R
 #' @include reader.R
 #' @include map.R
@@ -92,21 +126,8 @@ llr_core_env <- as.environment(list(
   first = function(x) x[[1]],
   last = function(x) x[[length(x)]],
   rest = function(x) x[-1],
-  conj = function(a, b) {
-    if (inherits(a, "ral_map") && inherits(a, "ral_map")) {
-      # TODO: make this work with vctrs/S3 double dispatch
-      map <- ral_map()
-      for (key in a$keys()) {
-        map <- map$set(key, a$get(key))
-      }
-      for (key in b$keys()) {
-        map <- map$set(key, b$get(key))
-      }
-      map
-    } else {
-      c(a, b)
-    }
-  },
+  conj = conj,
+  concat =`c`,
   assoc = function(coll, key, value) {
     # TODO: quick hack, refactor to proper dispatch
     if (inherits(coll, "ral_map")) {
