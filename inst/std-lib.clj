@@ -92,6 +92,11 @@
       (if (between 0 (- (count coll) 1) key)
           (r/[[ coll (r/base::`+` key 1))))))
 
+
+(defn first [coll] (get coll 0))
+(defn last [coll] (get coll (- (count coll) 1)))
+(defn rest [coll] (r/[ coll -1))
+
 (defn contains? [coll key]
   ; TODO: support llr bools
   (if (map? coll) ((r/$ coll contains) key)

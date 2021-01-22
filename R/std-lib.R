@@ -123,9 +123,6 @@ conj_impl.ral_map <- function(coll, ...) {
 #' @include list.R
 llr_core_env <- as.environment(list(
   meta = meta_fun,
-  first = function(x) x[[1]],
-  last = function(x) x[[length(x)]],
-  rest = function(x) x[-1],
   conj = conj,
   concat =`c`,
   assoc = function(coll, key, value) {
@@ -138,7 +135,6 @@ llr_core_env <- as.environment(list(
     }
   },
   do = do,
-  # `=` = `==`,
   `with-meta` = with_meta,
   `read-string` = read,
   hash = hasheq,
