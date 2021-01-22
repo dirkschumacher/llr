@@ -43,7 +43,7 @@ regular_tokenhandler <- function(element, token_iterator, envir) {
     return(new_keyword_node(element))
   }
   if (is_valid_boolean(element)) {
-    return(new_boolean_node(element == "true"))
+    return(new_llr_boolean(element == "true"))
   }
   if (is_valid_symbolic_value(element)) {
     return(new_symbolic_value_node(element))
@@ -191,7 +191,7 @@ is_valid_keyword <- function(str) {
   # keywords without namespaces yet
   grepl(
     x = str,
-    pattern = "^:[a-zA-Z\\*\\+\\!\\_\\'\\?<>&-][a-zA-Z0-9|%\\.\\*\\':\\+\\!\\_\\'\\?\\$<>#&-]*$"
+    pattern = "^:[a-zA-Z\\*\\+\\!\\_\\'\\?<>&-\\.][a-zA-Z0-9|%\\.\\*\\':\\+\\!\\_\\'\\?\\$<>#&-]*$"
   )
 }
 is_valid_boolean <- function(x) {

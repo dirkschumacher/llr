@@ -26,7 +26,7 @@ llr_format.keyword_node <- function(x) {
   format(x)
 }
 
-llr_format.boolean_node <- function(x) {
+llr_format.llr_boolean <- function(x) {
   format(x)
 }
 

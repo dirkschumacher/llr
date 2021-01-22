@@ -58,8 +58,8 @@ translate_to_r.keyword_node <- function(node, envir) {
   as.character(node)
 }
 
-translate_to_r.boolean_node <- function(node, envir) {
-  as.logical(node)
+translate_to_r.llr_boolean <- function(node, envir) {
+  node
 }
 
 translate_to_r.symbolic_value_inf_node <- function(node, envir) {

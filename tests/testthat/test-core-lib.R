@@ -48,3 +48,7 @@ test_that("= compares values", {
   expect_false(llr_test("(= 1 \"1\")"))
   expect_false(llr_test("(= r/mtcars \"1\")"))
 })
+
+test_that("map is type stable", {
+  expect_true(llr_test("(vector? (map dec [1 2 3]))"))
+})

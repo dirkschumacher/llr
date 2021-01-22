@@ -25,11 +25,13 @@ Imports:
     digest,
     rlang,
     utils,
-    R6
+    R6,
+    methods
 Collate: 
     'ast-translator.R'
-    'constants.R'
     'format.R'
+    'boolean.R'
+    'constants.R'
     'double.R'
     'list.R'
     'hasheq.R'

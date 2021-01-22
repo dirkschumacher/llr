@@ -50,6 +50,6 @@ vec_ptype2.list.ral_vector <- function(x, y, ...) {
 }
 
 #' @export
-as.character.ral_vector <- function(x, ...) {
+vec_cast.character.llr_boolean <- function(x, to, ...) {
   format(x)
 }

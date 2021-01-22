@@ -9,37 +9,50 @@
   ; define a function and assign it to a name
   `(def ~name (fn ~args ~body)))
 
-(def =
-  (fn [a b] (r/== (hash a) (hash b))))
+(defn = [a b] (boolean (r/== (hash a) (hash b))))
+(defn > [a b] (boolean (r/base::`>` a b)))
+(defn < [a b] (boolean (r/base::`<` a b)))
+(defn >= [a b] (boolean (or (> a b) (= a b))))
+(defn <= [a b] (boolean (or (< a b) (= a b))))
 
 (defmacro use [name]
   `((r/$ *ns_manager* use) ~name))
 
-(def +
-  (fn plus
-    ([] 0)
-    ([a] a)
-    ([a b] (r/base::`+` a b))
-    ([a b & more] (reduce plus (conj [a b] more)))))
+(defmacro multi-arity4-arith [name identity binary-fun]
+  `(def ~name
+     (fn rec
+      ([] ~identity)
+      ([a] a)
+      ([a b] (~binary-fun a b))
+      ([a b & more] (reduce rec (conj [a b] more))))))
 
-(def *
-  (fn prod
-    ([] 1)
-    ([a] a)
-    ([a b] (r/base::`*` a b))
-    ([a b & more] (reduce prod (conj [a b] more)))))
+(multi-arity4-arith + 0 r/base::`+`)
+(multi-arity4-arith * 1 r/base::`*`)
 
-(defmacro def-multi-logic [name fun]
+(defmacro multi-arity3-fun [name fun]
   `(def ~name
     (fn rec
       ([a] a)
       ([a b] (~fun a b))
       ([a b & more] (reduce rec (conj [a b] more))))))
 
-(def-multi-logic and r/base::`&&`)
-(def-multi-logic or r/base::`||`)
+(multi-arity3-fun - r/base::`-`)
+(multi-arity3-fun / r/base::`/`)
 
-(defn not [x] (r/! x))
+(def and
+  (fn rec
+    ([] true)
+    ([a] (if a true false))
+    ([a b] (if a (if b true false) false))
+    ([a b & more] (reduce rec (conj [a b] more)))))
+
+(def or
+  (fn rec
+    ([a] (if a true false))
+    ([a b] (if a true (if b true false)))
+    ([a b & more] (reduce rec (conj [a b] more)))))
+
+(defn not [x] (if x false true))
 
 (defmacro ->
   [start & values]
@@ -68,7 +81,9 @@
 (defn dec [x] (- x 1))
 (defn inc [x] (+ x 1))
 
-(defmacro comment [x] nil)
+(defn nil? [x]
+  ; TODO: not really sure how to implement nil
+  (boolean (r/is.null x)))
 
 (defn get [coll key]
   (if (map? coll) ((r/$ coll get) key) (r/[[ coll key)))
@@ -81,6 +96,9 @@
 (defn vals [map]
   ((r/$ map values)))
 
+(defn keys [map]
+  ((r/$ map keys)))
+
 (defn mod [a b] (r/%% a b))
 
 (defn int [x]
@@ -91,10 +109,16 @@
   ; TODO: handle NA, warnings
   (r/llr::ral_string (r/as.character x)))
 
-(def map (fn [f x] (r/purrr::map x f)))
-(def filter (fn [f x] (r/purrr::keep x f)))
+(defn boolean [x]
+  (if x true false))
+
+(def map
+  (fn [f x] (r/purrr::modify x f)))
+(def flatten r/purrr::flatten)
+(def filter r/Filter)
 (def partial r/purrr::partial)
-(def count (fn [x] (if (map? x) ((r/$ x length)) (r/length x))))
+(def count
+  (fn [x] (if (map? x) ((r/$ x length)) (r/length x))))
 (def reduce
   (fn
     ([f coll] (r/Reduce f coll))

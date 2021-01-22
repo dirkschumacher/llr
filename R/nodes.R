@@ -30,11 +30,6 @@ new_keyword_node <- function(value) {
   structure(as.character(value), class = c("keyword_node", "node", "character"))
 }
 
-new_boolean_node <- function(value) {
-  stopifnot(is.logical(value), length(value) == 1)
-  structure(value, class = c("boolean_node", "node", "logical"))
-}
-
 new_symbolic_value_node <- function(value) {
   value <- match.arg(value, c("##Inf", "##-Inf", "##NaN"))
   switch(
