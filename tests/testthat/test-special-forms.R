@@ -133,3 +133,10 @@ test_that("if works", {
   res <- llr_test("(if r/NULL 42 1)")
   expect_equal(res, 1, ignore_attr = TRUE)
 })
+
+test_that("keyword format", {
+  expect_equal(
+    format(llr_test("{:a 1}")),
+    "{:a 1}"
+  )
+})

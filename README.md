@@ -25,13 +25,13 @@ remotes::install_github("dirkschumacher/llr")
 ``` clojure
 (->
   r/datasets::mtcars
-  (r/dplyr::filter (> hp 100))
+  (r/dplyr::filter (r/base::`>` hp 100))
   (r/dplyr::summarise :count (r/dplyr::n) :mean_mpg (r/mean mpg))
   (r/tibble::as_tibble))
 #> # A tibble: 1 x 2
 #>   count mean_mpg
 #>   <int>    <dbl>
-#> 1    32     20.1
+#> 1    23     17.5
 ```
 
 Or run it from R
@@ -80,7 +80,7 @@ interp$repl()
 
 ``` clojure
 {:a 1 :b 2}
-#> {#r_object[character] 1 #r_object[character] 2}
+#> {:a 1 :b 2}
 ```
 
 ### Symbols
@@ -118,7 +118,7 @@ namespaced.variable/x
   ([] 0)
   ([a] a)
   ([a b] (+ a b))
-  ([a b & more] (reduce + (conj [a b] more))))
+  ([a b & more] (reduce + (concat [a b] more))))
 ```
 
 ### def

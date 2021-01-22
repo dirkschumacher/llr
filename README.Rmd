@@ -36,7 +36,7 @@ remotes::install_github("dirkschumacher/llr")
 ```{clojure}
 (->
   r/datasets::mtcars
-  (r/dplyr::filter (> hp 100))
+  (r/dplyr::filter (r/base::`>` hp 100))
   (r/dplyr::summarise :count (r/dplyr::n) :mean_mpg (r/mean mpg))
   (r/tibble::as_tibble))
 ```
@@ -122,7 +122,7 @@ namespaced.variable/x
   ([] 0)
   ([a] a)
   ([a b] (+ a b))
-  ([a b & more] (reduce + (conj [a b] more))))
+  ([a b & more] (reduce + (concat [a b] more))))
 ```
 
 ### def

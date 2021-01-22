@@ -59,7 +59,7 @@ translate_to_r.r_name <- function(node, envir) {
 }
 
 translate_to_r.keyword_node <- function(node, envir) {
-  as.character(node)
+  node
 }
 
 translate_to_r.llr_boolean <- function(node, envir) {
