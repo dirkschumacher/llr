@@ -31,7 +31,7 @@ remotes::install_github("dirkschumacher/llr")
 #> # A tibble: 1 x 2
 #>   count mean_mpg
 #>   <int>    <dbl>
-#> 1    23     17.5
+#> 1    32     20.1
 ```
 
 Or run it from R
@@ -80,7 +80,7 @@ interp$repl()
 
 ``` clojure
 {:a 1 :b 2}
-#> {:a 1 :b 2}
+#> {#r_object[character] 1 #r_object[character] 2}
 ```
 
 ### Symbols
@@ -140,7 +140,7 @@ at the moment.
 ``` clojure
 (def ^{:const true} x ^{:meta "hello"} [ 1 2 3])
 (meta x)
-#> {:meta hello}
+#> {:meta "hello"}
 ```
 
 Meta-data on symbols is currently only available to the reader.
@@ -177,12 +177,12 @@ currently only defined by `loop`.
 
 ``` clojure
 (is-even 5001)
-#> [1] FALSE
+#> false
 ```
 
 ``` clojure
 (is-even 5000)
-#> [1] TRUE
+#> true
 ```
 
 ### Namespaces
@@ -207,7 +207,7 @@ symbol when reading the character `#`.
 ``` clojure
 #_ (r/stop "error")
 "Yay"
-#> Yay
+#> "Yay"
 ```
 
 ### R interop
