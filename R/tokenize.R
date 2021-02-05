@@ -1,5 +1,8 @@
 tokenize <- function(str) {
   chars <- to_char_vec(str)
+  if (length(chars) <= 0) {
+    return(chars)
+  }
   first_char <- chars[[1]]
   state <- "expect_token"
   tokens <- character(length = length(chars)) # at most length(chars)
