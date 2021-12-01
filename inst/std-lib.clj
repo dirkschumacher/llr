@@ -122,7 +122,10 @@
   (if x true false))
 
 (def map
-  (fn [f x] (r/purrr::modify x f)))
+  (fn this
+      ([f x] (r/purrr::modify x f))
+      ([f x y] (r/do.call r/ral_list (r/purrr::map2 x y f)))))
+
 (def flatten r/purrr::flatten)
 (def filter r/Filter)
 (def partial r/purrr::partial)
