@@ -87,3 +87,8 @@ test_that("map2", {
   res <- llr_test("(map r/sum [1 2 3] [2 3 4])")
   expect_equal(res, do.call(ral_list, as.list(1:3 + 2:4)))
 })
+
+test_that("vector", {
+  res <- llr_test("(vector (r/seq_len 10))")
+  expect_equal(res, do.call(ral_vector, as.list(seq_len(10))))
+})

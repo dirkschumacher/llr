@@ -104,7 +104,7 @@ translate_to_r.if_call <- function(node, envir) {
           (is.logical(test) && length(test) == 1 && !is.na(test) && !test)
         )
         ,
-        !!!list(yes, no)
+        !!!base::list(yes, no)
       )
     })()
   )
@@ -180,7 +180,7 @@ create_fun_r_ast <- function(has_name, fun_name, node) {
     dot_name <- sym(args[[length(args)]])
     args[[length(args)]] <- quote(`...`)
     body <- expr({
-      `<-`(!!dot_name, list(...))
+      `<-`(!!dot_name, base::list(...))
       !!body
     })
   }
@@ -259,8 +259,8 @@ translate_to_r.ral_map <- function(node, envir) {
   })
   expr(
     ral_map(
-      keys = list(!!!keys),
-      values = list(!!!vals)
+      keys = base::list(!!!keys),
+      values = base::list(!!!vals)
     )
   )
 }
