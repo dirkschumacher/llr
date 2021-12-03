@@ -31,6 +31,6 @@ test_that("empty map", {
 })
 
 test_that("format works with length > 0 values and keys", {
-  expect_silent(format(llr_test("{:b (r/list 1 2 3)}")))
-  expect_silent(format(llr_test("{(r/list 1 2 3) 1}")))
+  expect_silent(format(llr_test("{:b (r/base::list 1 2 3)}")))
+  expect_silent(format(llr_test("{(r/base::list 1 2 3) 1}")))
 })

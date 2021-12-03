@@ -112,19 +112,26 @@
 
 (defn int [x]
   ; TODO: handle NA, warnings
-  (r/llr::ral_integer (r/as.integer x)))
+  (r/ral_integer (r/as.integer x)))
 
 (defn str [x]
   ; TODO: handle NA, warnings
-  (r/llr::ral_string (r/as.character x)))
+  (r/ral_string (r/as.character x)))
 
 (defn boolean [x]
   (if x true false))
 
+(defn vector [x]
+  (r/do.call r/ral_vector (r/as.list x)))
+
+(defn list [x]
+  (r/do.call r/ral_list (r/as.list x)))
+
 (def map
   (fn this
-      ([f x] (r/purrr::modify x f))
-      ([f x y] (r/do.call r/ral_list (r/purrr::map2 x y f)))))
+      ([f x] (let [res (r/purrr::map x f)]
+              (if (vector? x) (vector res) (list res))))
+      ([f x y] (list (r/purrr::map2 x y f)))))
 
 (def flatten r/purrr::flatten)
 (def filter r/Filter)
